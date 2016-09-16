@@ -17,7 +17,10 @@ function support = CS4300_n_queens_predicate(i,a,j,b)
 %     Fall 2016
 %
 
-if 0 % DEBUGGING
+DEBUG = 0;
+
+if DEBUG
+    disp 'checking n queens on:';
     a = strcat('a: ', num2str(a));
     i = strcat('i: ', num2str(i));
     b = strcat('b: ', num2str(b));
@@ -28,6 +31,7 @@ if 0 % DEBUGGING
     disp (j);
 end
 
+% PREDICATE LOGIC =================
 support = true;
 if(i == j)
     support = false;
@@ -35,4 +39,9 @@ end
 if(abs(a-b)/abs(i-j) == 1)
     support = false;
 end
+% =================================
 
+if DEBUG
+    disp 'result';
+    disp (support);
+end

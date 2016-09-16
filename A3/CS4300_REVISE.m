@@ -33,30 +33,25 @@ for i = 1:size(domainA, 2)
         continue;
     end
     
-    % allocate number of supports
-    supported = [];
+    supported = false;
     
     % iterate over the ending domain
     for j = 1:size(domainB, 2)
         if D(b,j) == 0
-            supported = [supported false];
             continue;
         end
         
-        % check for any support
+        % check for support. Break if support is found.
         if feval(P,i,a,j,b) 
-            % we have support
-            supported = [supported true]; 
-        else
-            % we do not have support
-            supported = [supported false]; 
+            supported = true;
+            break;
         end
     end
     
     % if all pairwise predicates fail for the given element in the
     % beginning domain, set that element to 0 (delete it) and record the
     % choice to delete an element
-    if sum(supported) == 0
+    if supported == false
         D(a,i) = 0;
     end
 end

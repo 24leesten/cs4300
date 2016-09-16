@@ -21,8 +21,6 @@ function D_revised = CS4300_AC3(G,D,P)
 %     Fall 2016
 %
 
-keep_going = true;
-
 % populate the queue with all arcs in G.
 len = size(G,1);
 que_size = (len*len)-len;
