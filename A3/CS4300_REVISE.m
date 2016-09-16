@@ -40,10 +40,12 @@ for i = 1:size(domainA)
     for j = 1:size(domainB)
         
         % if the predicate for the pair holds, then it does not fail.
-        if feval(P,i,a,j,b,D)
-            fail = [fail false];
+        if feval(P,i,a,j,b) 
+            % we have support
+            fail = [fail false]; 
         else
-            fail = [fail true];
+            % we do not have support
+            fail = [fail true]; 
         end
     end
     
