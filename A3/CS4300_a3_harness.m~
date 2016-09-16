@@ -26,14 +26,10 @@ for n = 3:10			% board size
         % 200 trials on each probability for each board size
         for trials = 1:200
             
-            % create a random board
-    		D = CS4300_rand_D_matrix(prob_of_a_one, n);
-            
-            % time the run time on parsing that board
             tic;
-            CS4300_AC1(G,D,'CS4300_test_predicate');
-            seconds = toc;
-            
+    		D = CS4300_rand_D_matrix(prob_of_a_one, n);
+            seconds = seconds + toc;
+
 %    		tic;
 %    		% Run AC1 (G,D)
 %    		ac1_seconds = toc;
@@ -51,4 +47,4 @@ for n = 3:10			% board size
     end
 end
 
-% stats = 
+stalg,current_graph,D,'CS4300_test_predicate');
