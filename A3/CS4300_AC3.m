@@ -20,3 +20,57 @@ function D_revised = CS4300_AC3(G,D,P)
 %     UU
 %     Fall 2016
 %
+
+keep_going = true;
+
+% populate the queue with all arcs in G.
+len = size(G,1);
+que_size = (len*len)-len;
+que = zeros(que_size, 2);
+index = 1;
+for row = 1:size(G,1)
+    for col = 1:size(G,2)
+        if G(row, col) == 1
+            que(index, 1) = row;
+            que(index, 2) = col;
+            index = index + 1;
+        end
+    end
+end
+
+que_used = zeros(que_size,2);
+updates_to_do = 1;
+
+while updates_to_do
+
+    % iterate over the queue of arcs
+    for i = 1:size(que,1)
+        q = que(i, 1:end);
+        
+        % pop from waiting
+        que(i, 1) = 0;
+        que(i, 2) = 0;
+        
+        % push to used
+        que_used(i, 1) = q(1);
+        que_used(i, 2) = q(2);
+
+        % check for revisions to the board
+        revised = CS4300_REVISE(q(1), q(2), D, P);
+
+        % if the resultant matrix contains a change, repopulate the queue
+        if ~all(all(revised == D))
+            D = revised;
+            que = que + que_used;
+            que_used = zeros(que_size,2);
+            break;
+        end
+    end
+    
+    % if all arcs are popped, we're done updating.
+    if sum(sum(que)) == 0
+        updates_to_do = 0;
+    end
+end
+
+D_revised = D;

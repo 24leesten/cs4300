@@ -13,7 +13,9 @@ function stats = CS4300_a3_harness()
 %     Fall 2016
 %
 
-stats = zeros(7, 6);
+trials = 20;
+
+timings = zeros(7, 6, 2);
 
 for n = 3:10			% board size
     G = ~eye(n,n); 		% adjacency matrix
@@ -21,34 +23,34 @@ for n = 3:10			% board size
     
     for prob_of_a_one = 0 : 0.2 : 1 	% start at 0, add 0.2 each iteration, end after 1
         prob_i = floor(prob_of_a_one*10)/2 + 1; % index of this probability
-        seconds = 0;    % start the timer
+        ac1_seconds = 0;
+        ac3_seconds = 0;
         
         % 200 trials on each probability for each board size
-        for trials = 1:200
+        for trials = 1:trials
             
             % create a random board
     		D = CS4300_rand_D_matrix(prob_of_a_one, n);
             
-            % time the run time on parsing that board
-            tic;
+            % time the run time on parsing that board            
+    		tic;
             CS4300_AC1(G,D,'CS4300_n_queens_predicate');
-            seconds = toc;
-            
-%    		tic;
-%    		% Run AC1 (G,D)
-%    		ac1_seconds = toc;
-%    		tic;
-%    		% Run AC3 (G,D)
-%    		ac3_seconds = toc;
+    		ac1_seconds = ac1_seconds + toc;
+    		tic;
+    		CS4300_AC3(G,D,'CS4300_n_queens_predicate');
+    		ac3_seconds = ac3_seconds + toc;
         end
 
         % burn out a round of 3x3 boards to prime the timer system and
         % prevent timing unassociated startup costs
         if n > 3
-            stats(size_i, prob_i) = seconds;
+            timings(size_i, prob_i, 1) = ac1_seconds/trials;
+            timings(size_i, prob_i, 2) = ac3_seconds/trials;
         end
 
     end
 end
 
-% stats = 
+stats = timings;
+disp 'IGNORE ME!';
+disp (stats(1, 1:end, 1:end));

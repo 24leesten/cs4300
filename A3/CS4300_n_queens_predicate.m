@@ -17,7 +17,7 @@ function support = CS4300_n_queens_predicate(i,a,j,b)
 %     Fall 2016
 %
 
-if 0
+if 0 % DEBUGGING
     a = strcat('a: ', num2str(a));
     i = strcat('i: ', num2str(i));
     b = strcat('b: ', num2str(b));
@@ -35,7 +35,4 @@ end
 if(abs(a-b)/abs(i-j) == 1)
     support = false;
 end
-
-disp 'supported';
-disp (support);
 
