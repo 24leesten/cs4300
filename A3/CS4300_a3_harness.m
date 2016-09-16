@@ -31,7 +31,7 @@ for n = 3:10			% board size
             
             % time the run time on parsing that board
             tic;
-            CS4300_AC1(G,D,'CS4300_test_predicate');
+            CS4300_AC1(G,D,'CS4300_n_queens_predicate');
             seconds = toc;
             
 %    		tic;

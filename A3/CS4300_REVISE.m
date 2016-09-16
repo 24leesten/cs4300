@@ -23,36 +23,40 @@ function D_revised = CS4300_REVISE(a,b,D,P)
 %     Fall 2016
 %
 
-domainA = D(a);
-domainB = D(b);
+domainA = D(a, 1:end);
+domainB = D(b, 1:end);
 
 % iterate over the beginning domain
-for i = 1:size(domainA)
+for i = 1:size(domainA, 2)
     % if the value is 0, skip it
     if D(a,i) == 0
         continue;
     end
     
-    % allocate number of failures
-    fail = [];
+    % allocate number of supports
+    supported = [];
     
     % iterate over the ending domain
-    for j = 1:size(domainB)        
+    for j = 1:size(domainB, 2)
+        if D(b,j) == 0
+            supported = [supported false];
+            continue;
+        end
         
-        % if the predicate for the pair holds, then it does not fail.
+        % check for any support
         if feval(P,i,a,j,b) 
             % we have support
-            fail = [fail false]; 
+            supported = [supported true]; 
         else
             % we do not have support
-            fail = [fail true]; 
+            supported = [supported false]; 
         end
     end
     
     % if all pairwise predicates fail for the given element in the
     % beginning domain, set that element to 0 (delete it) and record the
     % choice to delete an element
-    if all(fail) == 0
+    if sum(supported) == 0
         D(a,i) = 0;
     end
 end
