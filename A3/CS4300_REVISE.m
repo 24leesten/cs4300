@@ -37,7 +37,7 @@ for i = 1:size(domainA)
     fail = [];
     
     % iterate over the ending domain
-    for j = 1:size(domainB)
+    for j = 1:size(domainB)        
         
         % if the predicate for the pair holds, then it does not fail.
         if feval(P,i,a,j,b) 
@@ -52,7 +52,7 @@ for i = 1:size(domainA)
     % if all pairwise predicates fail for the given element in the
     % beginning domain, set that element to 0 (delete it) and record the
     % choice to delete an element
-    if all(fail)
+    if all(fail) == 0
         D(a,i) = 0;
     end
 end
