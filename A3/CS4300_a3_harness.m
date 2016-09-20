@@ -24,11 +24,11 @@ for n = 3:10			% board size
     
     for prob_of_a_one = 0 : 0.2 : 1 	% start at 0, add 0.2 each iteration, end after 1
         prob_i = floor(prob_of_a_one*10)/2 + 1; % index of this probability
-        ac1_seconds = 0;
-        ac3_seconds = 0;
         
         % repeat trials on each probability for each board size
         for t = 1:trials
+            ac1_seconds = 0;
+            ac3_seconds = 0;
             
             % create a random board
     		D = CS4300_rand_D_matrix(prob_of_a_one, n);
@@ -58,11 +58,18 @@ for x = 1:7
         stats(x,y,2) = mean(timings_3(x,y,:));
     end
 end
+faster_count = 0;
 for x = 1:7
     for y = 1:6
         stats(x,y,3) = (stats(x,y,1) - stats(x,y,2));
-        if stats(x,y,3) >= 0
+        if stats(x,y,3) > 0
+            faster_count = faster_count + 1;
             stats(x,y,4) = 1;
+        elseif stats(x,y,3) < 0
+            stats(x,y,4) = -1;
         end
     end
 end
+
+disp 'total faster';
+disp (faster_count);
