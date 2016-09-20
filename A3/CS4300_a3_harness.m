@@ -38,7 +38,7 @@ for n = 3:10			% board size
             CS4300_AC1MOD(G,D,'CS4300_n_queens_predicate');
     		ac1_seconds = ac1_seconds + toc;
     		tic;
-    		CS4300_AC3MOD(G,D,'CS4300_n_queens_predicate');
+    		CS4300_AC3MOD2(G,D,'CS4300_n_queens_predicate');
     		ac3_seconds = ac3_seconds + toc;
             
             % burn out a round of 3x3 boards to prime the timer system and
@@ -51,10 +51,17 @@ for n = 3:10			% board size
     end
 end
 
-stats = zeros(7, 6, 2);
+stats = zeros(7, 6, 3);
 for x = 1:7
     for y = 1:6
         stats(x,y,1) = mean(timings_1(x,y,:));
         stats(x,y,2) = mean(timings_3(x,y,:));
+    end
+end
+for x = 1:7
+    for y = 1:6
+        if (stats(x,y,1) - stats(x,y,2)) >= 0
+            stats(x,y,3) = 1;
+        end
     end
 end
