@@ -43,8 +43,6 @@ while q_index <= que_size
     q = que(q_index,:);
     a = q(1);
     b = q(2);
-    que(q_index,1) = 0;
-    que(q_index,2) = 0;
     q_index = q_index + 1;
 
     % check for revisions to the board

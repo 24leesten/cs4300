@@ -10,9 +10,8 @@ function stats = CS4300_a3_harness()
 %       stats.mean3  (7x6 matrix) mean timing for AC3 
 %       stats.diff   (7x6 matrix) diff of AC1 mean time - AC3 mean time
 %       stats.better (7x6 matrix) value = 1 if AC3 mean faster than AC3
-%       stats.onesbef(7x6x200 matrix) starting 1's for each trial
-%       stats.onesaft(7x6x200 matrix) ending 1's for each trial
-%       stats.onesdif(7x6x200 matrix) diff in 1's for each trial
+%       stats.onesbeg(7x6x200 matrix) starting 1's for each trial
+%       stats.onesend(7x6x200 matrix) ending 1's for each trial
 %       stats.mean1s (7x6 matrix) mean reduction of 1's 
 %       
 % Call:
@@ -64,7 +63,7 @@ for n = 3:10			% board size
                 timings_3(size_i, prob_i, t) = ac3_seconds;
                 ones_diff(size_i, prob_i, t) = ones - ones_rev;
                 ones_bef(size_i, prob_i, t) = ones;
-                ones_aft(size_i, prob_i, t) = ones_rev;
+                one_aft(size_i, prob_i, t) = ones_rev;
             end
         end
     end
@@ -72,9 +71,7 @@ end
 
 stats.times1 = timings_1;
 stats.times3 = timings_3;
-stats.onesbef = ones_bef;
-stats.onesaft = ones_aft;
-stats.onesdif = ones_diff;
+stats.ones = ones_diff;
 mean_1 = zeros(7,6);
 mean_3 = zeros(7,6);
 mean_o = zeros(7,6);
