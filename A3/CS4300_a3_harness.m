@@ -3,7 +3,7 @@ function stats = CS4300_a3_harness()
 % On input:
 %   N/A
 % On output:
-%     Stats: (struct) relevant stats for the trials
+%     stats: (struct) relevant stats for the trials
 %       stats.times1 (7x6x200 matrix) all timings for AC1
 %       stats.times3 (7x6x200 matrix) all timings for AC3
 %       stats.mean1  (7x6 matrix) mean timing for AC1
