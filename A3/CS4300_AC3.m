@@ -26,8 +26,8 @@ len = size(G,1);
 que_size = (len*len)-len;
 que = zeros(que_size, 2);
 index = 1;
-for row = 1:size(G,1)
-    for col = 1:size(G,2)
+for row = 1:size(G)
+    for col = 1:size(G)
         if G(row, col) == 1
             que(index, 1) = row;
             que(index, 2) = col;
@@ -36,38 +36,43 @@ for row = 1:size(G,1)
     end
 end
 
-que_used = zeros(que_size,2);
-updates_to_do = 1;
+% while the queue is not empty
+q_index = 1;
+while q_index <= que_size
+    % peek and pop
+    q = que(q_index,:);
+    a = q(1);
+    b = q(2);
+    que(q_index,1) = 0;
+    que(q_index,2) = 0;
+    q_index = q_index + 1;
 
-while updates_to_do
+    % check for revisions to the board
+    revised = CS4300_REVISE(a, b, D, P);
 
-    % iterate over the queue of arcs
-    for i = 1:size(que,1)
-        q = que(i, 1:end);
-        
-        % pop from waiting
-        que(i, 1) = 0;
-        que(i, 2) = 0;
-        
-        % push to used
-        que_used(i, 1) = q(1);
-        que_used(i, 2) = q(2);
+    % revise (a, b, D, P)
+    % if revised
+    %   add back to the queue from G:
+    %       any (i, a) where i != a and i != b
 
-        % check for revisions to the board
-        revised = CS4300_REVISE(q(1), q(2), D, P);
+    % if the resultant matrix contains a change, repopulate the queue
+    if ~all(all(revised == D))
+        D = revised;
 
-        % if the resultant matrix contains a change, repopulate the queue
-        if ~all(all(revised == D))
-            D = revised;
-            que = que + que_used;
-            que_used = zeros(que_size,2);
-            break;
+        % repopulate the queue
+        for n = 1:size(G)
+            % invariant for repopulated arcs
+            if n == a || n == b
+                continue;
+            end
+            % if an arc exists and isn't already on the que
+            if G(n,a) == 1
+                if ~ismember([n a], que, 'rows')
+                    q_index = q_index - 1;
+                    que(q_index,:) = [n a];
+                end
+            end
         end
-    end
-    
-    % if all arcs are popped, we're done updating.
-    if sum(sum(que)) == 0
-        updates_to_do = 0;
     end
 end
 

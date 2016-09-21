@@ -1,5 +1,5 @@
-function D_revised = CS4300_AC1MOD(G,D,P)
-% CS4300_AC1 - AC1 function from Mackworth paper 1977
+function D_revised = CS4300_AC3OLD(G,D,P)
+% CS4300_AC3OLD - AC3 function from Mackworth paper 1977
 % On input:
 %     G (nxn array): neighborhood graph for n nodes
 %     D (nxm array): m domain values for each of n nodes
@@ -7,24 +7,21 @@ function D_revised = CS4300_AC1MOD(G,D,P)
 %     arguments:
 %        i (int): start node index
 %        a (int): start node domain value
-%        j (int): end node index
-%        b (int): end node domain value
+%        i (int): end node index
+%        i (int): end node domain value
 % On output:
 %     D_revised (nxm array): revised domain labels
 % Call:
-%     G = [0,0,0,0,0;0,0,0,0,0;1,1,0,1,1;0,0,0,0,0;0,0,0,1,0];
-%     D = [1,1,1;1,1,1;1,1,0;1,1,0;1,1,0];
-%     Dr = CS4300_AC1(G,D,’CS4300_P_Fig1’);
+%     G = 1 - eye(3,3);
+%     D = [1,1,1;1,1,1;1,1,1];
+%     Dr = CS4300_AC3(G,D,’CS6100_P_no_attack’);
 % Author:
-%     Ryan Keepers
-%     Leland Stenquist
+%     <Your name>
 %     UU
 %     Fall 2016
 %
 
-updates_to_do = 1;
-
-% populate the queue
+% populate the queue with all arcs in G.
 len = size(G,1);
 que_size = (len*len)-len;
 que = zeros(que_size, 2);
@@ -39,20 +36,38 @@ for row = 1:size(G,1)
     end
 end
 
-while updates_to_do > 0
-    updates_to_do = 0;
+que_used = zeros(que_size,2);
+updates_to_do = 1;
+
+while updates_to_do
+
     % iterate over the queue of arcs
     for i = 1:size(que,1)
         q = que(i, 1:end);
         
+        % pop from waiting
+        que(i, 1) = 0;
+        que(i, 2) = 0;
+        
+        % push to used
+        que_used(i, 1) = q(1);
+        que_used(i, 2) = q(2);
+
         % check for revisions to the board
         revised = CS4300_REVISE(q(1), q(2), D, P);
 
-        % if the resultant matrix contains a change,
+        % if the resultant matrix contains a change, repopulate the queue
         if ~all(all(revised == D))
-            updates_to_do = updates_to_do + 1;
             D = revised;
+            que = que + que_used;
+            que_used = zeros(que_size,2);
+            break;
         end
+    end
+    
+    % if all arcs are popped, we're done updating.
+    if sum(sum(que)) == 0
+        updates_to_do = 0;
     end
 end
 

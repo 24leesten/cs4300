@@ -23,7 +23,7 @@ for n = 3:10			% board size
     size_i = n-3;       % index of this board size for stat housing
     
     for prob_of_a_one = 0 : 0.2 : 1 	% start at 0, add 0.2 each iteration, end after 1
-        prob_i = floor(prob_of_a_one*10)/2 + 1; % index of this probability
+        prob_i = floor(prob_of_a_one*5) + 1; % index of this probability
         
         % repeat trials on each probability for each board size
         for t = 1:trials
@@ -32,14 +32,14 @@ for n = 3:10			% board size
             
             % create a random board
     		D = CS4300_rand_D_matrix(prob_of_a_one, n);
-            
+           
             % time the run time on parsing that board            
     		tic;
-            CS4300_AC1MOD(G,D,'CS4300_n_queens_predicate');
-    		ac1_seconds = ac1_seconds + toc;
+            CS4300_AC1(G,D,'CS4300_n_queens_predicate');
+    		ac1_seconds = toc;
     		tic;
-    		CS4300_AC3MOD2(G,D,'CS4300_n_queens_predicate');
-    		ac3_seconds = ac3_seconds + toc;
+    		CS4300_AC3(G,D,'CS4300_n_queens_predicate');
+    		ac3_seconds = toc;
             
             % burn out a round of 3x3 boards to prime the timer system and
             % prevent timing unassociated startup costs
@@ -58,18 +58,13 @@ for x = 1:7
         stats(x,y,2) = mean(timings_3(x,y,:));
     end
 end
-faster_count = 0;
 for x = 1:7
     for y = 1:6
         stats(x,y,3) = (stats(x,y,1) - stats(x,y,2));
         if stats(x,y,3) > 0
-            faster_count = faster_count + 1;
             stats(x,y,4) = 1;
         elseif stats(x,y,3) < 0
             stats(x,y,4) = -1;
         end
     end
 end
-
-disp 'total faster';
-disp (faster_count);

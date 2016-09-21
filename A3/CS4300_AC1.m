@@ -22,28 +22,38 @@ function D_revised = CS4300_AC1(G,D,P)
 %     Fall 2016
 %
 
-keep_going = true;
+updates_to_do = 1;
 
-while keep_going
-    CHANGE = false;
-    for row = 1:size(G,1)
-        for col = 1:size(G,2)
-            % skip non-arced pairs
-            if G(row,col) == 0
-                continue;
-            end
-            % skip self-referential domains
-            if row == col
-                continue;
-            end
-            
-            D_r = CS4300_REVISE(row,col,D,P);
-            
-            CHANGE = (~isequal(D,D_r) | CHANGE);
-            D = D_r;
+% populate the queue
+len = size(G,1);
+que_size = (len*len)-len;
+que = zeros(que_size, 2);
+index = 1;
+for row = 1:size(G,1)
+    for col = 1:size(G,2)
+        if G(row, col) == 1
+            que(index, 1) = row;
+            que(index, 2) = col;
+            index = index + 1;
         end
     end
-    keep_going = CHANGE;
+end
+
+while updates_to_do > 0
+    updates_to_do = 0;
+    % iterate over the queue of arcs
+    for i = 1:size(que,1)
+        q = que(i, 1:end);
+        
+        % check for revisions to the board
+        revised = CS4300_REVISE(q(1), q(2), D, P);
+
+        % if the resultant matrix contains a change,
+        if ~all(all(revised == D))
+            updates_to_do = updates_to_do + 1;
+            D = revised;
+        end
+    end
 end
 
 D_revised = D;

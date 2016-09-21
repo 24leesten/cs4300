@@ -1,5 +1,5 @@
 function D_revised = CS4300_REVISE(a,b,D,P)
-% CS4300_REVISE - an implementation of the REVISE function for AC1 from the
+% CS4300_REVISE - an implementation of the REVISE function for AC1/3 from the
 %                   Mackworth paper 1977
 % On input:
 %     a (int): start node domain value
@@ -23,8 +23,14 @@ function D_revised = CS4300_REVISE(a,b,D,P)
 %     Fall 2016
 %
 
-domainA = D(a, 1:end);
-domainB = D(b, 1:end);
+domainA = D(a, :);
+domainB = D(b, :);
+
+if sum(domainA) == 0 || sum(domainB) == 0
+    len = size(domainA,2);
+    D_revised = zeros(len, len);
+    return;
+end
 
 % iterate over the beginning domain
 for i = 1:size(domainA, 2)
