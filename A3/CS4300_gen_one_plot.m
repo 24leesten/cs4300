@@ -21,7 +21,7 @@ function CS4300_gen_one_plot(stats)
 %
 
 % we want to loop through this row by row
-for row = 7:7
+for row = 1:7
   % get the max amount of ones
   max_ones = (3+row)*(3+row);
   % get a 1xN where N is the max amount of ones and fill with 1 through N
