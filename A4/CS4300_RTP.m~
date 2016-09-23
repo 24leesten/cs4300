@@ -35,6 +35,7 @@ counter = 1;
 do = 1;
 new = [];
 while do
+    disp 
     for i = 1:length(clauses)
         ci = clauses(i);
         si = ci.clauses;
