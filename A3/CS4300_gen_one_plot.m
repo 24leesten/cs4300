@@ -56,19 +56,22 @@ for row = 1:7
   %disp(average_lost_ones);
   
   % PLOTS %
-  f = figure();
+  %f = figure();
   % Plot against percentage %
-  subplot(1,2,1);
-  plot(percentage_lost_ones(:,1), percentage_lost_ones(:,2))
-  title(['Percentage Ones Lost for N=' num2str(row+3)]);
-  xlabel('Starting Number of Ones');
-  ylabel('Percentage Lost Ones');
+  hold on;
+%  subplot(1,2,1);
+%  scatter(percentage_lost_ones(:,1), percentage_lost_ones(:,2))
+%  title(['Percentage Ones Lost for N=' num2str(row+3)]);
+%  xlabel('Starting Number of Ones');
+%  ylabel('Percentage Lost Ones');
   % Plot against average %
-  subplot(1,2,2);
-  scatter(average_lost_ones(:,1), average_lost_ones(:,2))
-  title(['Average Ones Lost for N' num2str(row+3)]);
+%  subplot(1,2,2);
+  plot(average_lost_ones(:,1), average_lost_ones(:,2))
+  title('Average Ones Lost for a Given N');
   xlabel('Starting Number of Ones');
   ylabel('Average Lost Ones');
-  pos = get(f,'position');
-  set(f,'position',[pos(1:2)/4 pos(3:4)*2]);
+  %pos = get(f,'position');
+%  set(f,'position',[pos(1:2)/4 pos(3:4)*2]);
 end
+legend('N=4', 'N=5', 'N=6', 'N=7', 'N=8', 'N=9', 'N=10');
+hold off;
