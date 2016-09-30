@@ -44,7 +44,7 @@ for k = 1:length(Ci)
             Ci_t(k) = [];
             Cj_t(l) = [];
             % union the clauses without the conflict
-            clause = CS4300_remove_totalogy([Ci_t Cj_t]);
+            clause = CS4300_remove_tautology([Ci_t Cj_t]);
             resolvents(count).clauses = clause; 
         end
     end

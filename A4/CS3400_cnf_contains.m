@@ -1,5 +1,5 @@
-function contained = cnf_contains(cnf, clause)
-% cnf_contains - does the cnf contain the clause
+function contained = CS3400_cnf_contains(cnf, clause)
+% CS3400_cnf_contains - does the cnf contain the clause
 % On input:
 %     cnf (CNF data structure): array of conjuctive clauses
 %       (i).clauses
@@ -13,7 +13,7 @@ function contained = cnf_contains(cnf, clause)
 %     DP(3).clauses = [-3];
 %     DP(4).clauses = [1];
 %     clause = [4];
-%     Sr = cnf_contains(DP,clause);
+%     Sr = CS3400_cnf_contains(DP,clause);
 % Author:
 %     Ryan Keepers
 %     Leland Stenquist
@@ -24,7 +24,7 @@ function contained = cnf_contains(cnf, clause)
 len = length(cnf);
 contained = 0;
 for inx=1:len
-    if(length(cnf(inx).clauses) == length(clause) && all(clause == cnf(inx).clauses))
+     if(length(cnf(inx).clauses) == length(clause) && all(unique(clause) == unique(cnf(inx).clauses)))
         contained = 1;
         return;
     end

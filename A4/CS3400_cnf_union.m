@@ -1,5 +1,5 @@
-function union = cnf_union(left, right)
-% cnf_union - does the cnf contain the clause
+function union = CS3400_cnf_union(left, right)
+% CS3400_cnf_union - does the cnf contain the clause
 % On input:
 %     left (CNF data structure): array of conjuctive clauses
 %       (i).clauses
@@ -16,7 +16,7 @@ function union = cnf_union(left, right)
 %     DP(2).clauses = [-2];
 %     PD1(1).clauses = [-3];
 %     PD1(2).clauses = [1];
-%     Sr = cnf_union(DP,PD1);
+%     Sr = CS3400_cnf_union(DP,PD1);
 % Author:
 %     Ryan Keepers
 %     Leland Stenquist
@@ -33,7 +33,7 @@ if isempty(left)
 end
 
 for inx = 1:len
-    if(~cnf_contains(left, right(inx).clauses))
+    if(~CS3400_cnf_contains(left, right(inx).clauses))
         l = length(left) + 1;
         union(l).clauses = right(inx).clauses;
     end

@@ -69,14 +69,14 @@ while do
                 new = solvents;
             % add the solvents to new
             else
-                new = cnf_union(new, solvents);
+                new = CS3400_cnf_union(new, solvents);
             end
         end
     end
     
     % check for new as subset of clauses
     old_clauses_size = length(clauses);
-    clauses = cnf_union(clauses, new);
+    clauses = CS3400_cnf_union(clauses, new);
 
     if(old_clauses_size == length(clauses)) 
         disp 'NOOOOO';
