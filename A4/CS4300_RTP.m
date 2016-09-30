@@ -4,27 +4,25 @@ function Sip = CS4300_RTP(sentences,thm,vars)
 %     sentences (CNF data structure): array of conjuctive clauses
 %       (i).clauses
 %           each clause is a list of integers (- for negated literal)
-%     thm (CNF datastructure): a conjunct of disjunctive clauses to be tested
+%     thm (CNF datastructure): a disjunctive clause to be tested
 %     vars (1xn vector): list of variables (positive integers)
 % On output:
 %     Sip (CNF data structure): results of resolution
-%        []: proved sentence |= thm
+%        []: proved sentence |- thm
 %        not []: thm does not follow from sentences
 % Call:  (example from Russell & Norvig, p. 252)
 %     DP(1).clauses = [-1,2,3,4];
 %     DP(2).clauses = [-2];
 %     DP(3).clauses = [-3];
 %     DP(4).clauses = [1];
-%     thm = [4];
+%     thm(1).clauses = [4];
 %     vars = [1,2,3,4];
 %     Sr = CS4300_RTP(DP,thm,vars);
 % Author:
-%     Ryan Keepers
-%     Leland Stenquist
+%     <Your name>
 %     UU
 %     Fall 2016
 %
-
 debug = false;
 
 % append the theorem to the sentences
@@ -34,7 +32,7 @@ clauses(len).clauses = -thm;
 
 if debug
     disp('Knowledge Base');
-    CS4300_cnf_print(clauses);
+    CS3400_cnf_print(clauses);
 end
 
 do = 1;

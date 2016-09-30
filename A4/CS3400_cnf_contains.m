@@ -1,3 +1,4 @@
+
 function contained = CS3400_cnf_contains(cnf, clause)
 % CS3400_cnf_contains - does the cnf contain the clause
 % On input:
