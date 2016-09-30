@@ -22,7 +22,6 @@ function resolvents = CS4300_RESOLVE(Ci,Cj)
 % ORed together after we have found a two leterals that contradict. There
 % may be multiple resolvents.
 
-
 resolvents = [];
 count = 0;
 % resolve ci, cj
@@ -35,10 +34,11 @@ for k = 1:length(Ci)
             Cj_t = Cj;
             Ci_t(k) = [];
             Cj_t(l) = [];
+            % union the clauses without the conflict
             clause = CS4300_remove_totalogy([Ci_t Cj_t]);
             resolvents(count).clauses = clause; 
-            % union the clauses without the conflict
         end
     end
 end
+
 

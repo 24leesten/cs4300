@@ -30,8 +30,6 @@ len = length(sentences) + 1;
 clauses = sentences;
 clauses(len).clauses = -thm;
 
-counter = 1;
-
 do = 1;
 new = [];
 while do
@@ -47,46 +45,36 @@ while do
             sj = cj.clauses;
 
             % compare all clauses Ci Cj in sentences
-            solvent = CS4300_RESOLVE(si, sj);
-
-            % if the result is an empty array 
-            if length(solvent) == 0
-                disp 'YES!';
-                sentences(len).clauses = thm;
-                Sip = sentences;
-                return;
+            solvents = CS4300_RESOLVE(si, sj);
+            
+            % if the result is an empty array
+            for inx = 1:length(solvents)
+                if length(solvents(inx).clauses)==0
+                    disp 'YES!';
+                    sentences(len).clauses = thm;
+                    Sip = sentences;
+                    return;
+                end
             end
             %if ~cnf_contains(clauses, solvent)
             % union solvent with new array
             if length(new) == 0
-                new(1).clauses = solvent;
-                counter = counter + 1;
+                new = solvents;
+            % add the solvents to new
             else
-                if ~cnf_contains(new, solvent)
-                    new(counter).clauses = solvent;
-                    counter = counter + 1;
+                for inx = 1:length(solvents)
+                    new(length(new)+1).clauses = solvents(inx).clauses;
                 end
             end
-            %end
         end
     end
     
     % check for new as subset of clauses
-    subset = 1;
-    for n_c = 1:length(new)
-        if ~cnf_contains(clauses, new(n_c).clauses)
-            subset = 0;
-            break;
-        end
-    end
-    
-    % if new is a subset of clauses, return not [];
-    if subset
+    old_clauses_size = length(clauses);
+    clauses = cnf_union(clauses, new);
+    if(old_clauses_size == length(clauses)) 
         disp 'NOOOOO';
         Sip = sentences;
         return;
-    % else union new and clauses
-    else
-        clauses = cnf_union(clauses, new);
     end
 end
