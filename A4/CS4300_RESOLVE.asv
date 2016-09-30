@@ -7,7 +7,7 @@ function resolvents = CS4300_RESOLVE(Ci,Cj)
 %     Sip (CNF data structure): results of resolution
 %        []: proved sentence |= thm
 %        not []: thm does not follow from sentences
-% Call:  
+% Call:  (example from Russell & Norvig, p. 252)
 %     Ci = [-1,2,3,4];
 %     Cj = [-2];
 %     Sr = CS4300_RESOLVE(Ci, Cj);
@@ -22,7 +22,7 @@ function resolvents = CS4300_RESOLVE(Ci,Cj)
 % ORed together after we have found a two leterals that contradict. There
 % may be multiple resolvents.
 
-debug = false;
+debug = true;
 
 if debug
     disp('Ci');
@@ -53,7 +53,7 @@ end
 if debug
     disp('resolvents');
     CS4300_cnf_print(resolvents);  
-    disp('____________________')
+    disp
     pause
 end
 

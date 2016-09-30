@@ -25,10 +25,17 @@ function Sip = CS4300_RTP(sentences,thm,vars)
 %     Fall 2016
 %
 
+debug = false;
+
 % append the theorem to the sentences
 len = length(sentences) + 1;
 clauses = sentences;
 clauses(len).clauses = -thm;
+
+if debug
+    disp('Knowledge Base');
+    CS4300_cnf_print(clauses);
+end
 
 do = 1;
 new = [];
@@ -62,9 +69,7 @@ while do
                 new = solvents;
             % add the solvents to new
             else
-                for inx = 1:length(solvents)
-                    new(length(new)+1).clauses = solvents(inx).clauses;
-                end
+                new = cnf_union(new, solvents);
             end
         end
     end
@@ -72,6 +77,7 @@ while do
     % check for new as subset of clauses
     old_clauses_size = length(clauses);
     clauses = cnf_union(clauses, new);
+
     if(old_clauses_size == length(clauses)) 
         disp 'NOOOOO';
         Sip = sentences;

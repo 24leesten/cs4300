@@ -7,7 +7,7 @@ function contained = cnf_contains(cnf, clause)
 %     clause (CNF datastructure): a conjunct of disjunctive clauses to be tested
 % On output:
 %     contained (boolean): does the cnf contain the clause
-% Call:  (example from Russell & Norvig, p. 252)
+% Call: 
 %     DP(1).clauses = [-1,2,3,4];
 %     DP(2).clauses = [-2];
 %     DP(3).clauses = [-3];

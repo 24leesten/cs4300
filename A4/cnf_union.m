@@ -11,7 +11,7 @@ function union = cnf_union(left, right)
 %     union (CNF data structure): array of conjuctive clauses
 %       (i).clauses
 %           each clause is a list of integers (- for negated literal)
-% Call:  (example from Russell & Norvig, p. 252)
+% Call: 
 %     DP(1).clauses = [-1,2,3,4];
 %     DP(2).clauses = [-2];
 %     PD1(1).clauses = [-3];
