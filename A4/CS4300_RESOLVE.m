@@ -4,7 +4,9 @@ function resolvents = CS4300_RESOLVE(Ci,Cj)
 %     Ci (1xn vector): a clause
 %     Cj (1xn vector): a clause
 % On output:
-%     resolved (1xn vector): a clause
+%     Sip (CNF data structure): results of resolution
+%        []: proved sentence |= thm
+%        not []: thm does not follow from sentences
 % Call:  (example from Russell & Norvig, p. 252)
 %     Ci = [-1,2,3,4];
 %     Cj = [-2];
@@ -33,7 +35,8 @@ for k = 1:length(Ci)
             Cj_t = Cj;
             Ci_t(k) = [];
             Cj_t(l) = [];
-            resolvents(count).clauses = [Ci_t Cj_t]; 
+            clause = CS4300_remove_totalogy([Ci_t Cj_t]);
+            resolvents(count).clauses = clause; 
             % union the clauses without the conflict
         end
     end
