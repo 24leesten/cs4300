@@ -1,4 +1,4 @@
-function CS4300_cnf_print(cnf)
+function CS3400_cnf_print(cnf)
 % CS4300_cnf_print - print a cnf form structure
 % On input:
 %     cnf (CNF data structure): array of conjuctive clauses
