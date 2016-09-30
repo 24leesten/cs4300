@@ -21,6 +21,8 @@ function updated = CS4300_Intersect_thm(sentences,thm)
 %     Fall 2016
 %
 
+disp 'THE FUNCTION CS4300_INTERSECT_THM IS NOW DEPRECATED.  SO... DONT USE IT';
+
 for s = 1:length(sentences)
     result = [];
     clause = sentences(s).clauses;

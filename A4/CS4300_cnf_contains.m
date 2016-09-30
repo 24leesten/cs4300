@@ -1,5 +1,4 @@
-
-function contained = CS3400_cnf_contains(cnf, clause)
+function contained = CS4300_cnf_contains(cnf, clause)
 % CS3400_cnf_contains - does the cnf contain the clause
 % On input:
 %     cnf (CNF data structure): array of conjuctive clauses

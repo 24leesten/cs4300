@@ -14,7 +14,7 @@ function D_revised = CS4300_AC3(G,D,P)
 % Call:
 %     G = 1 - eye(3,3);
 %     D = [1,1,1;1,1,1;1,1,1];
-%     Dr = CS4300_AC3(G,D,’CS6100_P_no_attack’);
+%     Dr = CS4300_AC3(G,D,'CS6100_P_no_attack');
 % Author:
 %     <Your name>
 %     UU
@@ -43,6 +43,7 @@ while q_index <= que_size
     q = que(q_index,:);
     a = q(1);
     b = q(2);
+    que(q_index,:) = [0 0];
     q_index = q_index + 1;
 
     % check for revisions to the board

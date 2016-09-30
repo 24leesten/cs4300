@@ -22,7 +22,7 @@ function resolvents = CS4300_RESOLVE(Ci,Cj)
 % ORed together after we have found a two leterals that contradict. There
 % may be multiple resolvents.
 
-debug = false;
+debug = fa;
 
 if debug
     disp('Ci');
@@ -52,7 +52,7 @@ end
 
 if debug
     disp('resolvents');
-    CS4300_cnf_print(resolvents);  
+    CS3400_cnf_print(resolvents);  
     disp('____________________')
     pause
 end

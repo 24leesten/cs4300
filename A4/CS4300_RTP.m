@@ -28,11 +28,12 @@ debug = false;
 % append the theorem to the sentences
 len = length(sentences) + 1;
 clauses = sentences;
-clauses(len).clauses = -thm;
+nthm = CS4300_NEG_THM(thm);
+clauses = CS4300_cnf_union(clauses, nthm);
 
 if debug
     disp('Knowledge Base');
-    CS3400_cnf_print(clauses);
+    CS4300_cnf_print(clauses);
 end
 
 do = 1;
@@ -54,30 +55,27 @@ while do
             
             % if the result is an empty array
             for inx = 1:length(solvents)
-                if length(solvents(inx).clauses)==0
-                    disp 'YES!';
-                    sentences(len).clauses = thm;
-                    Sip = sentences;
+                if isempty(solvents(inx).clauses)
+                    Sip = [];
                     return;
                 end
             end
             %if ~cnf_contains(clauses, solvent)
             % union solvent with new array
-            if length(new) == 0
+            if isempty(new)
                 new = solvents;
             % add the solvents to new
             else
-                new = CS3400_cnf_union(new, solvents);
+                new = CS4300_cnf_union(new, solvents);
             end
         end
     end
     
     % check for new as subset of clauses
     old_clauses_size = length(clauses);
-    clauses = CS3400_cnf_union(clauses, new);
+    clauses = CS4300_cnf_union(clauses, new);
 
     if(old_clauses_size == length(clauses)) 
-        disp 'NOOOOO';
         Sip = sentences;
         return;
     end
