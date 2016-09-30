@@ -31,9 +31,11 @@ clauses = sentences;
 nthm = CS4300_NEG_THM(thm);
 clauses = CS4300_cnf_union(clauses, nthm);
 
-getstats = true;
+getstats = false;
 loops = 0;
 resolves = 0;
+
+resolved = [];
 
 if debug
     disp('Knowledge Base');
@@ -52,6 +54,8 @@ while do
             if i == j
                 continue;
             end
+            
+            if ismember([i j]
             
             cj = clauses(j);
             sj = cj.clauses;

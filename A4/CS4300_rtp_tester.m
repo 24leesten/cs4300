@@ -139,9 +139,6 @@ KB(6).clauses = [6];
 KB(7).clauses = [7];
 KB(8).clauses = [8];
 KB(9).clauses = [9];
-KB(10).clauses = [10];
-KB(11).clauses = [11];
-KB(12).clauses = [12];
 thm = [13];
 answer = [];
 
@@ -170,13 +167,15 @@ end
 
 
 KB = [];
-KB(1).clauses = [-1 -2 -3 -4 -5 6];
+KB(1).clauses = [-1 -2 -3 -4 -5 -6 -7 8];
 KB(2).clauses = [1];
 KB(3).clauses = [2];
 KB(4).clauses = [3];
 KB(5).clauses = [4];
 KB(6).clauses = [5];
-thm = [6];
+KB(7).clauses = [6];
+KB(8).clauses = [7];
+thm = [8];
 answer = [];
 
 result = CS4300_RTP(KB,thm,vars);
