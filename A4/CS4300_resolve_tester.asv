@@ -114,8 +114,7 @@ answer(1).clauses = zeros(1,0);
 
 result = CS4300_RESOLVE(a,b);
 
-%if all(answer(1).clauses == result(1).clauses)
-if isempty(result)
+if all(answer(1).clauses == result(1).clauses)
     disp 'test 7 passes';
 else
     disp 'test 7 fails';

@@ -31,7 +31,7 @@ clauses = sentences;
 nthm = CS4300_NEG_THM(thm);
 clauses = CS4300_cnf_union(clauses, nthm);
 
-getstats = true;
+getstats = false;
 loops = 0;
 resolves = 0;
 
@@ -58,6 +58,7 @@ while do
 
             % compare all clauses Ci Cj in sentences
             solvents = CS4300_RESOLVE(si, sj);
+            solvents = CS4300_remove_tautology(solvents);
             resolves = resolves + 1;
             
             % if the result is an empty array
