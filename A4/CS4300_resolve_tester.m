@@ -32,13 +32,12 @@ end
 a = [1 2 3 4]
 b = [-4 -2]
 answer = [];
-% answer(1).clauses = [1 3];
-% answer(2).clauses = [1 3];
+answer(1).clauses = [1 3 4 -4];
+answer(2).clauses = [1 2 3 -2];
 
 result = CS4300_RESOLVE(a,b);
 
-% if (answer(1).clauses == result(1).clauses) & (answer(2).clauses == result(2).clauses)
-if isempty(result)
+if ((answer(1).clauses == result(1).clauses) & (answer(2).clauses == result(2).clauses))
     disp 'test 2 passes';
 else
     disp 'test 2 fails';
@@ -49,12 +48,11 @@ end
 a = [1 2 3 4]
 b = [-1 -2 -3 -4]
 answer = [];
-answer(1).clauses = zeros(1,0);
+answer(1).clauses = [2 3 4 -2 -3 -4];
 
 result = CS4300_RESOLVE(a,b);
 
-%if all(answer(1).clauses == result(1).clauses)
-if isempty(result)
+if all(answer(1).clauses == result(1).clauses)
     disp 'test 3 passes';
 else
     disp 'test 3 fails';
@@ -114,8 +112,7 @@ answer(1).clauses = zeros(1,0);
 
 result = CS4300_RESOLVE(a,b);
 
-%if all(answer(1).clauses == result(1).clauses)
-if isempty(result)
+if all(answer(1).clauses == result(1).clauses)
     disp 'test 7 passes';
 else
     disp 'test 7 fails';

@@ -159,8 +159,7 @@ answer = [];
 
 result = CS4300_RTP(KB,thm,vars);
 
-%if all(answer == result)
-if ~isempty(result)
+if all(answer == result)
     disp 'test 9 passes';
 else
     disp 'test 9 fails';
@@ -169,20 +168,20 @@ end
 
 
 KB = [];
-KB(1).clauses = [-1 -2 -3 -4 -5 -6 7];
+KB(1).clauses = [-1 -2 -3 -4 -5 -6 -7 8];
 KB(2).clauses = [1];
 KB(3).clauses = [2];
 KB(4).clauses = [3];
 KB(5).clauses = [4];
 KB(6).clauses = [5];
 KB(7).clauses = [6];
-thm = [7];
+KB(8).clauses = [7];
+thm = [8];
 answer = [];
 
 result = CS4300_RTP(KB,thm,vars);
 
-%if all(answer == result)
-if ~isempty(result)
+if all(answer == result)
     disp 'test 10 passes';
 else
     disp 'test 10 fails';
