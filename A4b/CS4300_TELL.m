@@ -1,5 +1,5 @@
-function sentence = CS4300_MPS(percept)
-% CS3400_MPS - the make-percept-sentence function
+function statement = CS4300_TELL()
+% CS3400_TELL - not sure yet
 % On input:
 %     percept (1x5 num vector): a vector of boolean percepts
 % On output:
