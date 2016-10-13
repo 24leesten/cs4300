@@ -17,19 +17,22 @@ function v = CS4300_PERCEPT_CONST(p)
 %     UU
 %     Fall 2016
 %
-v = [];
-if p(1)
-    v = [v 1];
-end
-if p(2)
-    v = [v 2];
-end
-if p(3)
-    v = [v 3];
-end
-if p(4)
-    v = [v 4];
-end
-if p(5)
-    v = [v 5];
+
+
+
+switch (p)
+    case 'BREEZE'
+        v = 1;
+    case 'PIT'
+        v = 2;
+    case 'STENCH'
+        v = 3;
+    case 'WUMPUS'
+        v = 4;
+    case 'GLITTER'
+        v = 5;
+    case 'GOLD'
+        v = 6;
+    otherwise
+        v = -1;
 end
