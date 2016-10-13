@@ -5,6 +5,7 @@ function c = CS4300_GET_CONST(x, y, p)
 %     x (int): x position of the wumpus board
 %     y (int): y position of the wumpus board
 %     p (int): percept value
+%         0: Nothing
 %         1: Stench
 %         2: Breeze
 %         3: Glitter
@@ -28,7 +29,13 @@ function c = CS4300_GET_CONST(x, y, p)
 b = x + (4 * (y - 1));
 
 % get percpet scalar
-s = 16 * p;
+sign = 1;
+if p >= 0
+    s = 16 * p;
+else
+    s = 16 * p * -1;
+    sign = -1;
+end
 
 % return sum
-c = b + s;
+c = (b + s) * sign;
