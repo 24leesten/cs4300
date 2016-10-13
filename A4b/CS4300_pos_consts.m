@@ -1,6 +1,6 @@
-function c = CS4300_GET_CONST(x, y, p)
-% CS3400_GET_CONST - returns the scaled constant of the location for the
-% percept
+function c = CS4300_pos_consts(x, y, p)
+% CS3400_GET_CONST - returns the constant value for the given location and
+% percept.  Ex: (1,1,stench) = 17.  (1,1,breeze) = 33.
 % On input:
 %     x (int): x position of the wumpus board
 %     y (int): y position of the wumpus board
@@ -17,7 +17,7 @@ function c = CS4300_GET_CONST(x, y, p)
 % On output:
 %     c (int): int value of the percept at that location
 % Call:
-%     val = CS3400_GET_CONST(1 1 1);
+%     val = CS4300_pos_consts(1 1 1);
 % Author:
 %     Ryan Keepers
 %     Leland Stenquist

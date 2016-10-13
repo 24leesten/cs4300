@@ -1,5 +1,5 @@
-function v = CS4300_PERCEPT_CONST(p)
-% CS3400_PERCEPT_CONST - returns an int vector with the present percepts
+function v = CS4300_parse_percept(p)
+% CS3400_PERCEPT_CONST - returns an int vector representing the percepts
 % On input:
 %     percept (1x5 Boolean array): percept values
 %       (1): Stench variable (neighbors wumpus)
@@ -10,7 +10,7 @@ function v = CS4300_PERCEPT_CONST(p)
 % On output:
 %     v (1x5 num vector): int values of the present percepts
 % Call:
-%     val = CS3400_PERCEPT_CONST('BREEZE');
+%     val = CS4300_parse_percept([0 1 0 1 1]);
 % Author:
 %     Ryan Keepers
 %     Leland Stenquist

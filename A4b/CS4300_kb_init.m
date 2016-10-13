@@ -1,5 +1,6 @@
-function kb = CS4300_GET_CNF(x, y, p)
-% CS3400_GET_CNF - gets all sentences associated with the inputs
+function kb = CS4300_kb_init(x, y, p)
+% CS3400_GET_CNF - gets the cnf clauses for the provided inputs as they
+% would appear in the initial state of the wumpus world knowledge base.
 % On input:
 %     x (int): x position on the wumpus board
 %     y (int): y position on the wumpus board
@@ -19,7 +20,7 @@ function kb = CS4300_GET_CNF(x, y, p)
 %           each clause is a list of integers (- for negated literal)
 %     clause (CNF datastructure): a conjunct of disjunctive clauses to be tested
 % Call: 
-%     kb = CS3400_GET_CNF();
+%     kb = CS3400_kb_init(1,1,6);
 % Author:
 %     Ryan Keepers
 %     Leland Stenquist
