@@ -1,18 +1,29 @@
-function statement = CS4300_TELL()
-% CS3400_TELL - not sure yet
+function knowledge = CS4300_TELL(KB, MPS)
+% CS3400_TELL - adds MPS to the KB
 % On input:
-%     percept (1x5 num vector): a vector of boolean percepts
+%     KB (CNF data structure): array of conjuctive clauses
+%       (i).clauses
+%           each clause is a list of integers (- for negated literal)
+%     MPS (CNF data structure): array of conjuctive clauses
+%       (i).clauses
+%           each clause is a list of integers (- for negated literal)
 % On output:
-%     sentence (CNF data structure): array of conjuctive clauses
+%     knowledge (CNF data structure): array of conjuctive clauses
 %       (i).clauses
 %           each clause is a list of integers (- for negated literal)
 %     clause (CNF datastructure): a conjunct of disjunctive clauses to be tested
 % Call: 
-%     percept = [0,0,1,0,1];
-%     sentence = CS3400_MPS(percept);
+%     KB(1).clauses = [1];
+%     MPS(1).clauses = [2];
+%     sentence = CS3400_TELL(percept);
 % Author:
 %     Ryan Keepers
 %     Leland Stenquist
 %     UU
 %     Fall 2016
 %
+
+% KB WILL EVENTUALLY BE GLOBAL, SO THIS WON'T WORK PERFECTLY, BUT YO UGET
+% THE IDEA
+
+knowledge = CS4300_cnf_union(KB, MPS);
