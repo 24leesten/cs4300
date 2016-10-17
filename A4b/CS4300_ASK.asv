@@ -18,17 +18,13 @@ function answer = CS4300_ASK(kb, thm)
 %     ask(3).clauses = [-1];
 %     ask(4).clauses = [-2];
 %     ask(5).clauses = [-3];
-%     thm = [];
+%     ask = [];
 %     thm(1).clauses = [4];
-%     answer = CS4300_ASK(kb, thm);
+%     sentence = CS4300_ASK(kb, thm);
 % Author:
 %     Ryan Keepers
 %     Leland Stenquist
 %     UU
 %     Fall 2016
 %
-
-for i = 0:length(thm)
-    
-end
 
