@@ -31,7 +31,7 @@ function kb = CS4300_kb_init(x, y, p)
 kb = [];
 counter = 1;
 
-here = CS4300_GET_CONST(x,y,p);
+here = CS4300_pos_consts(x,y,p);
 
 % stench or breeze
 if p < 3
@@ -44,16 +44,16 @@ if p < 3
 
     % retrieve const values for locations 
     if x < 4
-        north = CS4300_GET_CONST(x,(y+1),p_ind);
+        north = CS4300_pos_consts(x,(y+1),p_ind);
     end
     if x > 1
-        south = CS4300_GET_CONST(x,(y-1),p_ind);
+        south = CS4300_pos_consts(x,(y-1),p_ind);
     end
     if y < 4
-        east = CS4300_GET_CONST((x+1),y,p_ind);
+        east = CS4300_pos_consts((x+1),y,p_ind);
     end
     if y > 1
-        west = CS4300_GET_CONST((x-1),y,p_ind);
+        west = CS4300_pos_consts((x-1),y,p_ind);
     end
 
     % create the clauses
@@ -91,4 +91,3 @@ if p < 3
     kb(counter).clauses = sent;
 end
     
-% if glitter
