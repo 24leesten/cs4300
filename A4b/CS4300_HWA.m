@@ -86,6 +86,7 @@ kb = CS4300_TELL(kb, CS4300_MPS(percepts, x, y));
 
 theorem = [];
 
+% we can take this out.  It'll have a full plan at this point.
 theorem(1).clauses = [GOLD_GRABBED];
 if isempty(plan) && CS4300_ASK(kb, theorem)
     disp('GOLD GRABBED, LEAVING');
@@ -93,6 +94,7 @@ if isempty(plan) && CS4300_ASK(kb, theorem)
     plan = 1;
 end
 
+% grab the gold and run!
 theorem(1).clauses = [CS4300_pos_consts(x,y,GLITTER)];
 if isempty(plan) && CS4300_ASK(kb, theorem)
     disp('GRABBING, LEAVING');
@@ -101,13 +103,23 @@ if isempty(plan) && CS4300_ASK(kb, theorem)
     plan = [GRAB; plan];
 end
 
-% if we don't have a plan yet
+% things to change:
+% 1. We're already keeping track of visited, that's good.
+% 2. We need to discover what might be safe
+%   a. iterate over all unvisited board areas.
+%   b. if we can prove no wumpus and no pit, it's safe.  make methods for
+%   that
+%   c. if not, we mark it as uncertain.
+%   d. it's possible to have 2 uncertains.  safeish (no nearby
+%   breeze/stench) and not safeish(nearby breeze/stench).
+% 3. then we plan a trip with trip planner to one of those locations.
 if isempty(plan)
     disp('Go somewhere safe');
     % plan to go to a location that is both unvisited and not deadly
     plan = CS4300_get_surrounding(x,y,d,safe,kb);
 end
     
+% just need a better way to do this, I think
 theorem(1).clauses = [ARROW_FIRED];
 if isempty(plan) && ~CS4300_ASK(kb, theorem);
     disp('shooting');
@@ -117,14 +129,17 @@ if isempty(plan) && ~CS4300_ASK(kb, theorem);
 end
 
 
-% if we still have no plan, nothing to do but go forward
+% things to change:
+% 1. back in touch with our revised current board
+% 2. head to one of the unvisited, not safeish areas.
 if isempty(plan)
     disp('hail mary');
     % go for a tile that isn't totally unsafe
     plan = CS4300_hail_mary(x,y,d,safe,kb);
 end
 
-% if we still have no plan
+% things to change:
+% this is now a guarantee that we have no other possible options.
 if isempty(plan)
     disp('give up');
     % back up one room and try again
