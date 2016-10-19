@@ -28,6 +28,13 @@ for y = 1:3
     end
 end
 
+start = [];
+start(1).clauses = CS4300_pos_consts(x,y,-6);
+start(2).clauses = CS4300_pos_consts(x,y,-7);
+
+kb = CS4300_cnf_union(kb,start);
+
+%{
 % init wumpi
 wumps = zeros(1,16);
 counter = 1;
@@ -39,7 +46,6 @@ for y = 1:4
 end
 
 % commenting this out for now, pending further input from the professor
-%{
 counter = length(kb) + 1;
 kb(counter).clauses = wumps;
 counter = counter + 1;

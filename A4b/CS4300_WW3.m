@@ -1,4 +1,4 @@
-function [scores,traces] = CS4300_WW32(max_steps,f_name)
+function [scores,traces] = CS4300_WW3(max_steps,f_name)
 % CS4300_WW3 - Wumpus World 3 (hybrid agent) simulator
 % On input:
 %     max_steps (int): maximum number of simulation steps
@@ -37,7 +37,7 @@ board1 = [0,0,0,3;...
 scores(1).board = board1;
 scores(1).score = score;
 scores(1).trace = trace;
-
+%{
 clear(f_name);
 
 board2 = [0,0,0,1;...
@@ -59,3 +59,4 @@ board3 = [0,0,0,0;...
 scores(3).board = board3;
 scores(3).score = score;
 scores(3).trace = trace;
+%}

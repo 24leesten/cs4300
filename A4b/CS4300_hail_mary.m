@@ -1,6 +1,6 @@
-function plan = CS4300_get_surrounding(x,y,d,visited,KB)
-% CS3400_get_surrounding - returns the adjacent locations which are visitab
-% le, unvisited, and not deadly
+function plan = CS4300_hail_mary(x,y,d,visited,KB)
+% CS3400_hail_mary - returns a plan for going somewhere that is possibly
+% safe just maybe hopefully
 % On input:
 %     x (int): x position of the wumpus board
 %     y (int): y position of the wumpus board
@@ -17,7 +17,7 @@ function plan = CS4300_get_surrounding(x,y,d,visited,KB)
 %     board = ones(4,4);
 %     KB = [];
 %     KB(1).clauses = [1];
-%     plan = CS4300_get_surrounding(1,1,0,board,KB);
+%     plan = CS4300_hail_mary(1,1,0,board,KB);
 % Author:
 %     Ryan Keepers
 %     Leland Stenquist
@@ -37,7 +37,6 @@ PIT = 7;
 % try moving forward
 skip = 0;
 th1 = [];
-th2 = [];
 
 next = CS4300_update_state([x y d], FORWARD);
 nx = next(1);
@@ -51,15 +50,13 @@ elseif visited(4-ny+1, nx) == 0
 end
 
 th1(1).clauses = CS4300_pos_consts(nx,ny,WUMPUS);
-th2(1).clauses = CS4300_pos_consts(nx,ny,-WUMPUS);
-if ~skip && (CS4300_ASK(KB, th1) || ~CS4300_ASK(KB, th2))
+if ~skip && CS4300_ASK(KB, th1)
     % it's deadly
     skip = 1;
 end
 
 th1(1).clauses = CS4300_pos_consts(nx,ny,PIT);
-th2(1).clauses = CS4300_pos_consts(nx,ny,-PIT);
-if ~skip && (CS4300_ASK(KB, th1) || ~CS4300_ASK(KB, th2))
+if ~skip && CS4300_ASK(KB, th1)
     % it's deadly
     skip = 1;
 end
@@ -73,7 +70,6 @@ end
 % try turning LEFT then moving forward
 skip = 0;
 th1 = [];
-th2 = [];
 
 next = CS4300_update_state([x y d], LEFT);
 next = CS4300_update_state(next, FORWARD);
@@ -88,15 +84,13 @@ elseif visited(4-ny+1, nx) == 0
 end
 
 th1(1).clauses = CS4300_pos_consts(nx,ny,WUMPUS);
-th2(1).clauses = CS4300_pos_consts(nx,ny,-WUMPUS);
-if ~skip && (CS4300_ASK(KB, th1) || ~CS4300_ASK(KB, th2))
+if ~skip && CS4300_ASK(KB, th1)
     % it's deadly
     skip = 1;
 end
 
 th1(1).clauses = CS4300_pos_consts(nx,ny,PIT);
-th2(1).clauses = CS4300_pos_consts(nx,ny,-PIT);
-if ~skip && (CS4300_ASK(KB, th1) || ~CS4300_ASK(KB, th2))
+if ~skip && CS4300_ASK(KB, th1)
     % it's deadly
     skip = 1;
 end
@@ -110,7 +104,6 @@ end
 % try turning RIGHT then moving forward
 skip = 0;
 th1 = [];
-th2 = [];
 
 next = CS4300_update_state([x y d], RIGHT);
 next = CS4300_update_state(next, FORWARD);
@@ -125,15 +118,13 @@ elseif visited(4-ny+1, nx) == 0
 end
 
 th1(1).clauses = CS4300_pos_consts(nx,ny,WUMPUS);
-th2(1).clauses = CS4300_pos_consts(nx,ny,-WUMPUS);
-if ~skip && (CS4300_ASK(KB, th1) || ~CS4300_ASK(KB, th2))
+if ~skip && CS4300_ASK(KB, th1)
     % it's deadly
     skip = 1;
 end
 
 th1(1).clauses = CS4300_pos_consts(nx,ny,PIT);
-th2(1).clauses = CS4300_pos_consts(nx,ny,-PIT);
-if ~skip && (CS4300_ASK(KB, th1) || ~CS4300_ASK(KB, th2))
+if ~skip && CS4300_ASK(KB, th1)
     % it's deadly
     skip = 1;
 end
@@ -142,4 +133,3 @@ if ~skip
     plan = [RIGHT; FORWARD];
     return;
 end
-

@@ -1,16 +1,12 @@
 function answer = CS4300_ASK(kb, thm)
-% CS3400_ASK - not sure yet
+% CS3400_ASK - use RTP to test the theorem against our knowledge base
 % On input:
 %     answer (CNF data structure): array of conjuctive clauses
 %       (i).clauses
-%           each clause is a list of integers (- for negated literal)%     
-%     thm (CNF data structure): array of conjuctive clauses
-%       (i).clauses
-%           each clause is a list of integers (- for negated literal)
+%           each clause is a list of integers (- for negated literal)     
+%     thm (CNF data structure): 1 disjunctive clause to be tested
 % On output:
-%     answer (CNF data structure): array of conjuctive clauses
-%       (i).clauses
-%           each clause is a list of integers (- for negated literal)
+%     answer (boolean): true if the theorem was proven
 % Call: 
 %     ask = [];
 %     ask(1).clauses = [1 2 3 4];
@@ -27,8 +23,11 @@ function answer = CS4300_ASK(kb, thm)
 %     UU
 %     Fall 2016
 %
+vars = CS4300_get_vars(kb, thm);
+result = CS4300_RTP(kb, thm, vars);
 
-for i = 0:length(thm)
-    
+if isempty(result)
+    answer = true;
+else
+    answer = false;
 end
-
