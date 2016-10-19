@@ -23,7 +23,4 @@ function knowledge = CS4300_TELL(KB, MPS)
 %     Fall 2016
 %
 
-% KB WILL EVENTUALLY BE GLOBAL, SO THIS WON'T WORK PERFECTLY, BUT YO UGET
-% THE IDEA
-
 knowledge = CS4300_cnf_union(KB, MPS);

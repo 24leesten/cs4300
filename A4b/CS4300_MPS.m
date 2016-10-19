@@ -80,6 +80,7 @@ for inx = 1:length(p)
                 end
                 s = CS4300_NEG_THM(-wumps);
             end
+        
     end
     
     sentences = CS4300_cnf_union(s, sentences);
