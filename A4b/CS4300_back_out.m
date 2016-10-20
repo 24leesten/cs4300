@@ -1,4 +1,4 @@
-function plan = CS4300_back_out(x,y,d,visited,steps)
+function plan = CS4300_back_out(x,y,d,visited)
 % CS3400_back_out - sets a plan to reach the (1,1) board location and climb
 % out.
 % On input:
@@ -8,7 +8,6 @@ function plan = CS4300_back_out(x,y,d,visited,steps)
 %     visted (4x4 int matrix): visited locations on the board
 %         0: visited
 %         1: unvisited
-%     steps (int): the number of steps to back out
 % On output:
 %     plan (1xn int array): exit plan from this location
 % Call:
@@ -24,36 +23,17 @@ function plan = CS4300_back_out(x,y,d,visited,steps)
 % find the a-star path
 [so no] = CS4300_Wumpus_A_star(visited, [x y d], [1 1 2], 'CS4300_A_star_Man');
 plan = [];
-if steps > 0
-    remaining = steps;
-else
-    remaining = 1;
-end
 
-if so(4) == 0 && length(so) == 4
-    plan = [6];
-    return;
-end
+[m n] = size(so);
 
-for s = 1:length(so)
+for s = 1:m
     % skip the initial 0 action
     if s == 1
         continue;
     end
     
     action = so(s,4);
-    
-    if remaining == 0
-        break;
-    end
-    if steps > 0 && action == 1
-        remaining = remaining - 1;
-    end
     plan = [plan; action];
 end
 
-if remaining > 0
-    plan = [plan; 6];
-end
-
-disp(plan);
+plan = [plan; 6];

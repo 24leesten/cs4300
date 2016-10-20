@@ -28,6 +28,7 @@ p = CS4300_parse_percept(percepts);
 sentence = [];
 counter = 1;
 
+
 for inx = 1:length(p)
     switch(abs(p(inx)))
         % stench

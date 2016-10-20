@@ -1,4 +1,4 @@
-function get_surrounding_tester
+function dangerboard = get_surrounding_tester
 % CS3400_get_surrounding - returns the adjacent locations which are visitab
 % le, unvisited, and not deadly
 % percept.  Ex: (1,1,stench) = 17.  (1,1,breeze) = 33.
@@ -13,8 +13,9 @@ function get_surrounding_tester
 %     Fall 2016
 %
 
-board = [[1 1 1 0];[7 1 7 0];[0 6 0 0];[0 0 0 7]];
-disp(board);
+board = [[1 1 1 0];[1 1 1 0];[0 1 0 0];[0 0 0 1]];
+boardvis = [[1 1 1 0];[7 1 7 0];[0 6 0 0];[0 0 0 7]];
+disp(boardvis);
 kb = CS4300_INIT_KB();
 % a wumpus (6) is in 2,2.
 % a pit (7) is in 1,3; 3,3; 4,1
@@ -41,16 +42,7 @@ add(15).clauses = CS4300_pos_consts(2,1,-2);
 add(16).clauses = CS4300_pos_consts(4,4,-2);
 
 kb = CS4300_cnf_union(kb, add);
-plan = [];
 
-% assume agent is in 4,4 facing north
-x = 4;
-y = 4;
-d = 1;
-% should get back the plan [LEFT FORWARD]
-plan = CS4300_get_surrounding(x,y,d,board,kb);
-if ~isempty(plan) && all(plan == [3 1])
-    disp('TEST 1 SUCCESS');
-else
-    disp('TEST 1 FAILURE');
-end
+dangerboard = CS4300_make_danger_board(board,kb);
+
+disp (dangerboard);

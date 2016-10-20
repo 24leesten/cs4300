@@ -1,6 +1,6 @@
-function plan = CS4300_hail_mary(x,y,d,danger,visited)
-% CS4300_hail_mary - returns the path to the safest unvisited
-% location (hopefully).
+function plan = CS4300_prob_safe_path(x,y,d,danger,visited)
+% CS4300_prob_safe_path - returns the path to the safest unvisited
+% location.
 % On input:
 %     x (int): x position of the wumpus board
 %     y (int): y position of the wumpus board
@@ -15,8 +15,8 @@ function plan = CS4300_hail_mary(x,y,d,danger,visited)
 %     plan (1xn int array): best plan from this location
 % Call:
 %     safe = [[1 1 1 0];[1 1 1 0];[0 1 0 0];[0 0 0 1]];
-%     danger = [[1 1 11 0];[21 1 31 0];[0 51 0 0];[0 0 0 21]];
-%     plan = CS4300_hail_mary(1,1,0,danger,safe);
+%     danger = [[1 1 1 0];[21 1 31 0];[0 51 0 0];[0 0 0 21]];
+%     plan = CS4300_prob_safe_path(1,1,0,danger,safe);
 % Author:
 %     Ryan Keepers
 %     Leland Stenquist
@@ -38,21 +38,21 @@ for r = 1:4
         adjacent = 0;
         
         % only go to locations which are reachable
-        if(danger(row, col) < 100 && danger(row, col) > 1)
+        if(danger(row, col) == 1)
             % if we've visited NORTH 
             if (row - 1 > 0) && (danger(row - 1,col) == 0)
-                visitable = [visitable; [col r]];
                 adjacent = 1;
+                visitable = [visitable; [col r]];
             end
             % if we've visited WEST 
             if ~adjacent && (col - 1 > 0) && (danger(row,col-1) == 0)
-                visitable = [visitable; [col r]];
                 adjacent = 1;
+                visitable = [visitable; [col r]];
             end
             % if we've visited SOUTH
             if ~adjacent && (row + 1 < 5) && (danger(row + 1,col) == 0)
-                visitable = [visitable; [col r]];
                 adjacent = 1;
+                visitable = [visitable; [col r]];
             end
             % if we've visited EAST
             if ~adjacent && (col + 1 < 5) && (danger(row,col + 1) == 0)
@@ -62,14 +62,13 @@ for r = 1:4
     end
 end
 
-% if no possible spots are found, return an empty plan
+% if no safe spots are found, return an empty plan
 if isempty(visitable)
     return; 
 end
 
-% choose a random visitable location
-choice = randi(length(visitable));
-goal = visitable(choice,:);
+% pop the first visitable probably safe locaion
+goal = visitable(1,:);
 % tell the visited board we can go there.
 visited(5-goal(2), goal(1)) = 0;
 

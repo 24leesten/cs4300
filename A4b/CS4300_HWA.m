@@ -47,6 +47,7 @@ persistent plan;
 loc = [];
 x = 0;
 y = 0;
+already_visited = 0;
 
 % initialize the persistent variables on the first call.
 if length(t) == 0
@@ -67,6 +68,9 @@ else
     x = loc(1);
     y = loc(2);
     d = loc(3);
+    if safe(4-y+1,x) == 0
+        already_visited = 1;
+    end
 end
 
 if length(safe) == 0
@@ -81,25 +85,23 @@ if length(kb) == 0
     kb = CS4300_INIT_KB();
 end
 
-% tell the kb about the current percepts.
-kb = CS4300_TELL(kb, CS4300_MPS(percepts, x, y));
+if ~already_visited
+    % tell the kb about the current percepts.
+    kb = CS4300_TELL(kb, CS4300_MPS(percepts, x, y));
 
-theorem = [];
-
-% we can take this out.  It'll have a full plan at this point.
-theorem(1).clauses = [GOLD_GRABBED];
-if isempty(plan) && CS4300_ASK(kb, theorem)
-    disp('GOLD GRABBED, LEAVING');
-    % we should just leave.
-    plan = 1;
+    % we can guarantee the current location does not have a pit or wumpus
+    thisvisit = [];
+    thisvisit(1).clauses = CS4300_pos_consts(x,y,-WUMPUS);
+    thisvisit(2).clauses = CS4300_pos_consts(x,y,-PIT);
+    kb = CS4300_cnf_union(kb, thisvisit);
 end
+theorem = [];
 
 % grab the gold and run!
 theorem(1).clauses = [CS4300_pos_consts(x,y,GLITTER)];
 if isempty(plan) && CS4300_ASK(kb, theorem)
-    disp('GRABBING, LEAVING');
     % the plan is Grab, then Get to safety
-    plan = CS4300_back_out(x,y,d,safe,0);
+    plan = CS4300_back_out(x,y,d,safe);
     plan = [GRAB; plan];
 end
 
@@ -114,18 +116,25 @@ end
 %   breeze/stench) and not safeish(nearby breeze/stench).
 % 3. then we plan a trip with trip planner to one of those locations.
 if isempty(plan)
-    disp('Go somewhere safe');
+    % build our danger board
+    danger = CS4300_make_danger_board(safe, kb);
     % plan to go to a location that is both unvisited and not deadly
-    plan = CS4300_get_surrounding(x,y,d,safe,kb);
+    plan = CS4300_prob_safe_path(x,y,d,danger,safe);
 end
     
 % just need a better way to do this, I think
 theorem(1).clauses = [ARROW_FIRED];
 if isempty(plan) && ~CS4300_ASK(kb, theorem);
-    disp('shooting');
     % ASK if there might be a wumpus nearby
     % if so, plan to shoot it!
     plan = CS4300_can_shoot_wumpus(x,y,d,safe,kb);
+    
+    % if we have a plan, we're going to shoot the arrow.
+    if ~isempty(plan)
+        fired = [];
+        fired(1).clauses = ARROW_FIRED;
+        kb = CS4300_cnf_union(kb, fired);
+    end
 end
 
 
@@ -133,23 +142,20 @@ end
 % 1. back in touch with our revised current board
 % 2. head to one of the unvisited, not safeish areas.
 if isempty(plan)
-    disp('hail mary');
     % go for a tile that isn't totally unsafe
-    plan = CS4300_hail_mary(x,y,d,safe,kb);
+    plan = CS4300_hail_mary(x,y,d,danger,safe);
 end
 
 % things to change:
 % this is now a guarantee that we have no other possible options.
 if isempty(plan)
-    disp('give up');
     % back up one room and try again
-    plan = CS4300_back_out(x,y,d,safe,1);
+    plan = CS4300_back_out(x,y,d,safe);
 end
 
 action = plan(1);
 plan = plan(2:end);
 
-disp(sprintf('taking the action %d', action));
 
 % update the state based on the action
 state = [state; CS4300_update_state(loc, action)];

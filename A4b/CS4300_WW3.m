@@ -27,6 +27,8 @@ agent.dir = 0;  % facing right
 agent.succeed = 0;  % has gold and climbed out
 agent.climbed = 0; % climbed out
 
+%{
+disp 'ONE';
 clear(f_name);
 
 board1 = [0,0,0,3;...
@@ -37,7 +39,8 @@ board1 = [0,0,0,3;...
 scores(1).board = board1;
 scores(1).score = score;
 scores(1).trace = trace;
-%{
+
+disp 'TWO';
 clear(f_name);
 
 board2 = [0,0,0,1;...
@@ -48,7 +51,8 @@ board2 = [0,0,0,1;...
 scores(2).board = board2;
 scores(2).score = score;
 scores(2).trace = trace;
-
+%}
+disp 'THREE';
 clear(f_name);
 
 board3 = [0,0,0,0;...
@@ -59,4 +63,4 @@ board3 = [0,0,0,0;...
 scores(3).board = board3;
 scores(3).score = score;
 scores(3).trace = trace;
-%}
+

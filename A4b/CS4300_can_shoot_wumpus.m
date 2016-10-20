@@ -25,109 +25,173 @@ function plan = CS4300_can_shoot_wumpus(x,y,d,visited,kb)
 %     Fall 2016
 %
 STENCH = 1;
+RIGHT = 2;
 LEFT = 3;
 SHOOT = 5;
+WUMPUS = 6;
+EAST = 0;
+NORTH = 1;
+WEST = 2;
+SOUTH = 3;
 
-possible_wump_board = zeros(4,4);
+plan = [];
+
+wump_board = zeros(4,4);
 thm = [];
-stenches = [];
 
-% mark all locations of stench.
-for y = 1:4
-    for x = 1:4
-        thm(1).clauses = CS4300_pos_consts(x,y,STENCH);
-        if CS4300_ASK(kb, thm)
-            possible_wump_board(4-y+1,x) = 1;
-            stenches = [stenches; [x y]];
+for c = 1:4
+    for r = 1:4
+        % places we've visited obviously have no wumpus
+        if visited(4-r+1,c) == 0
+            continue;
         end
+        
+        thm(1).clauses = CS4300_pos_consts(c,r,-WUMPUS);
+        result = ~CS4300_ASK(kb, thm);
+        wump_board(4-r+1,c) = result;
     end
 end
 
-% not enough information
-if length(stenches) <= 2
-    plan = [];
+% can't do anything if we have no possible wumpus locations.
+if sum(sum(wump_board)) == 0
+    disp('no possible locations');
     return;
 end
 
-wumpx = -1;
-wumpy = -1;
+not_guaranteed = [];
+guaranteed = [];
 
-% we know exactly where the wumpus is
-if length(stenches) > 2
-    for a = 1:length(stenches)
+for c = 1:4
+    for r = 1:4
+        if wump_board(5-r,c) == 1
+            thm(1).clauses = CS4300_pos_consts(c,r,WUMPUS);
+            % find which spaces are guaranteeed to have a wumpus or not
+            if CS4300_ASK(kb, thm)
+                guaranteed = [c r];
+            else
+                not_guaranteed = [not_guaranteed; [c r]];
+            end
+        end
         
-        if wumpx > 0
+        % if we found a guaranteed spot for a wumpus
+        if ~isempty(guaranteed)
             break;
         end
-        
-        xa = stenches(a,1);
-        ya = stenches(a,2);
-        
-        for b = a:length(stenches)
-            
-            if wumpx > 0
-                break;
-            end
-            
-            xb = stenches(b,1);
-            yb = stenches(b,2);
-            if xa == xb
-                wumpx = xa;
-                wumpy = (ya + yb) / 2;
-                
-            end
-            if ya == yb
-                wumpy = ya;
-                wumpx = (xa + xb) / 2;
-            end
-
-        end
+    end
+    % if we found a guaranteed spot for a wumpus
+    if ~isempty(guaranteed)
+        break;
     end
 end
 
-% get facing position if we're aligned with the wumpus.
-if wumpx == x
-    plan = [SHOOT];
+while ~isempty(not_guaranteed)
+    if ~isempty(guaranteed)
+        target = guaranteed;
+    else   
+        [m n] = size(not_guaranteed);
+        choice = randi(m);
+        target = not_guaranteed(choice,:);
+    end
     
-    if (y - wumpy) > 0
-        % face north and fire
-        while ~(d == 1)
-            next = CS4300_update_state([x y d], LEFT);
-            d = next(3);
-            plan = [LEFT; plan];
+    targetx = target(1);
+    targety = target(2);
+
+    goal_found = 0;
+
+    % find a location to shoot from
+    for c = 1:4
+        for r = 1:4
+            if visited(5-r,c) == 0
+                if targetx == c || targety == r
+                    goal = [c r 0];
+                    goal_found = 1;
+                    break;
+                end
+            end
         end
-        return;
-        
+        if goal_found
+            break;
+        end
+    end
+    
+    % if we didn't find a viable goal this time, pop and try again
+    if ~goal_found
+        not_guaranteed(choice,:) = [];
     else
-        % face south and fire
-        while ~(d == 3)
-            next = CS4300_update_state([x y d], LEFT);
-            d = next(3);
-            plan = [LEFT; plan];
-        end
-        return;
+        break;
     end
 end
 
-if wump == y
-    plan = [SHOOT];
+if ~goal_found
+    disp('no goal found');
+    return;
+end
+
+% find the plan
+[so no] = CS4300_Wumpus_A_star(visited, [x y d], [goal d-1], 'CS4300_A_star_Man');
+[m n] = size(so);
+% we want the full plan except for the last step that takes us into the
+% wumpus
+dir = d;
+for s = 1:m
+    % skip the initial 0 action
+    if s == 1
+        continue;
+    end
     
-    if (x - wumpx) < 0
-        % face east and fire
-        while ~(d == 2)
-            next = CS4300_update_state([x y d], LEFT);
-            d = next(3);
-            plan = [LEFT; plan];
+    % get the direction we are facing
+    if s == m
+        dir = so(s,3);
+    end
+    action = so(s,4);
+    plan = [plan; action];
+end
+
+% face ourselves towards the wumpus
+if targetx == goal(1)
+    %north
+    if (targety - goal(2)) > 0
+        if dir == SOUTH
+            plan = [plan; LEFT; LEFT];
+        elseif dir == EAST
+            plan = [plan; LEFT];
+        elseif dir == WEST
+            plan = [plan; RIGHT];
         end
-        return;
-        
+           
+    %south
     else
-        % face west and fire
-        while ~(d == 0)
-            next = CS4300_update_state([x y d], LEFT);
-            d = next(3);
-            plan = [LEFT; plan];
+        if dir == NORTH
+            plan = [plan; LEFT; LEFT];
+        elseif dir == EAST
+            plan = [plan; RIGHT];
+        elseif dir == WEST
+            plan = [plan; LEFT];
         end
-        return;
+        
+    end
+elseif targety == goal(2)
+    %west
+    if (targetx - goal(1) < 0)
+        if dir == EAST
+           plan = [plan; LEFT; LEFT];
+        elseif dir == NORTH
+           plan = [plan; LEFT];
+        elseif dir == SOUTH
+           plan = [plan; RIGHT];
+        end
+    %east
+    else
+        if dir == WEST
+           plan = [plan; LEFT; LEFT];
+        elseif dir == NORTH
+           plan = [plan; RIGHT];
+        elseif dir == SOUTH
+           plan = [plan; LEFT];
+        end
     end
 end
+
+plan = [plan; SHOOT];
+
+    
