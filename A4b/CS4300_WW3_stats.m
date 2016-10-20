@@ -29,17 +29,17 @@ agent.succeed = 0;  % has gold and climbed out
 agent.climbed = 0; % climbed out
 
 onelive = zeros(1,num_trials);
-onegold = zeros(1,num_trials);
+onescor = zeros(1,num_trials);
 onesucc = zeros(1,num_trials);
-oneclim = zeros(1,num_trials);
+onetime = zeros(1,num_trials);
 twolive = zeros(1,num_trials);
-twogold = zeros(1,num_trials);
+twoscor = zeros(1,num_trials);
 twosucc = zeros(1,num_trials);
-twoclim = zeros(1,num_trials);
+twotime = zeros(1,num_trials);
 threelive = zeros(1,num_trials);
-threegold = zeros(1,num_trials);
+threescor = zeros(1,num_trials);
 threesucc = zeros(1,num_trials);
-threeclim = zeros(1,num_trials);
+threetime = zeros(1,num_trials);
 
 for i = 1:num_trials 
     disp(sprintf('I %d', i));
@@ -51,29 +51,33 @@ for i = 1:num_trials
         0,0,0,0;...
         2,1,0,0;...
         0,0,0,0];
+    tic;
     [score,trace] = CS4300_WW1(max_steps,f_name,board1);
+    t = toc;
     
     ag = trace(length(trace)).agent;
     onelive(i) = ag.alive;
-    onegold(i) = ag.gold;
+    onescor(i) = score;
     onesucc(i) = ag.succeed;
-    oneclim(i) = ag.climbed;
-    
+    onetime(i) = t;
+    %{
     disp 'TWO';
     clear(f_name);
 
     board2 = [0,0,0,1;...
-        3,2,1,0;...
+        1,2,3,0;...
         0,0,0,0;...
         0,0,1,0];
+    tic;
     [score,trace] = CS4300_WW1(max_steps,f_name,board2);
-
+    t = toc;
+    
     ag = trace(length(trace)).agent;
     twolive(i) = ag.alive;
-    twogold(i) = ag.gold;
+    twoscor(i) = score;
     twosucc(i) = ag.succeed;
-    twoclim(i) = ag.climbed;
-    
+    twotime(i) = t;
+    %}
     disp 'THREE';
     clear(f_name);
 
@@ -81,24 +85,27 @@ for i = 1:num_trials
         0,0,0,0;...
         3,2,0,0;...
         0,1,0,0];
+    tic;
     [score,trace] = CS4300_WW1(max_steps,f_name,board3);
-
+    t = toc;
+    
     ag = trace(length(trace)).agent;
     threelive(i) = ag.alive;
-    threegold(i) = ag.gold;
+    threescor(i) = score;
     threesucc(i) = ag.succeed;
-    threeclim(i) = ag.climbed;
+    threetime(i) = t;
+    
 end
 
 stats.ol = onelive;
-stats.og = onegold;
+stats.oe = onescor;
 stats.os = onesucc;
-stats.oc = oneclim;
+stats.ot = onetime;
 stats.tl = twolive;
-stats.tg = twogold;
+stats.te = twoscor;
 stats.ts = twosucc;
-stats.tc = twoclim;
+stats.tt = twotime;
 stats.hl = threelive;
-stats.hg = threegold;
+stats.he = threescor;
 stats.hs = threesucc;
-stats.hc = threeclim;
+stats.ht = threetime;
