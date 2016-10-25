@@ -19,11 +19,11 @@ function action = CS4300_MC_HWA(percepts)
 %
 
 % PERSISTENTS
-% breezes, stenches, visited, frontier (4x4 array) meanings
-% breezes & stenches
+% breezes, stench, visited, frontier (4x4 array) meanings
+% breezes & stench
 %     -1: unknown
-%      1: breeze
-%      0: no breeze
+%      1: true
+%      0: false
 % visited
 %     -1: unvisited
 %      0: visited
@@ -31,13 +31,19 @@ function action = CS4300_MC_HWA(percepts)
 %     -1: unvisited
 %      1: frontier
 %      0: visited
+% safe
+%     -1: unknown
+%      0: safe
 persistent breezes;
-persistent stenches;
+persistent stench;
 persistent visited;
 persistent frontier;
+persistent safe;
 persistent state;
 persistent plan;
 persistent t;
+
+DEBUG = false;
 
 %ACTIONS
 FORWARD = 1;
@@ -90,9 +96,9 @@ if isempty(breezes)
     breezes = -ones(4,4);   
 end
 
-% stenches
-if isempty(stenches)
-    stenches = -ones(4,4);
+% stench
+if isempty(stench)
+    stench = -ones(4,4);
 end
 
 % visited
@@ -105,21 +111,28 @@ if isempty(frontier)
     frontier = -ones(4,4);
 end
 
+% frontier
+if isempty(safe)
+    safe = -ones(4,4);
+end
+
 % we need to update our boards
 if ~already_visited
     %update breezes
     breezes(fix_y(y),x) = is_breeze;
-    %update stenches
-    stenches(fix_y(y),x) = is_breeze;
+    %update stench
+    stench(fix_y(y),x) = is_stench;
     %update visited
     visited(fix_y(y),x) = 0;
     %update frontier
     frontier = CS4300_update_frontier(visited);
+    %update safe
+    safe = CS4300_update_safe(visited, stench, breezes);
 end
 
-if (1==0)
+if (DEBUG)
     disp(breezes);
-    disp(stenches);
+    disp(stench);
     disp(visited);
     disp(frontier);
 end
@@ -136,12 +149,12 @@ end
 if is_scream
     %   - check if the cell we are on has a stench
     %   - check if the plan is empty
-    if stenches(fix_y(y), x) == 1 && isempty(plan)
+    if stench(fix_y(y), x) == 1 && isempty(plan)
         % move foreward
         plan = [FOREWARD];
     end
-    %   - clear the stenches board the wumpus is dead.
-    stenches = zeroes(4,4);
+    %   - clear the stench board the wumpus is dead.
+    stench = zeroes(4,4);
 end
  
 % If the plan is empty, check the frontier for an unvisited safe cell

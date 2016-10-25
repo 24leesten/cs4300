@@ -8,7 +8,9 @@ function frontier = CS4300_update_frontier(visited)
 %         1: frontier
 %         -1: unvisited
 % Call:
-% frontier = CS4300_update_frontier()
+% visited = -ones(4,4);
+% visited(4,1) = 0;
+% frontier = CS4300_update_frontier(visited)
 % new_state = [1 1 0]
 %
 % Author:
