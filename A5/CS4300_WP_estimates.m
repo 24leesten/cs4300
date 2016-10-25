@@ -36,6 +36,8 @@ function [pits,Wumpus] = CS4300_WP_estimates(breezes,stench,num_trials)
 % Fall 2016
 %
 
+DEBUG = false;
+
 % CONSTANTS
 STENCH = 1;
 BREEZE = 2;
@@ -77,9 +79,11 @@ for i = 1:num_trials
                     % if the breeze or stench does not match for the board
                     %     generated then we do not add it
                     if breezes(row,col) ~= -1 && breezes(row,col) ~=  percepts(BREEZE)
+                        debug(DEBUG, breezes, board);
                         add_board = false;
                     end
                     if stench(row,col) ~= -1 && stench(row,col) ~=  percepts(STENCH)
+                        debug(DEBUG, breezes, board);
                         add_board = false;
                     end
                 end
@@ -100,3 +104,10 @@ Wumpus = mean(Wumpus_boards, 3);
 % fix the y value to operate with the matrix
 function y = fix_y(y)
 y = 4-y+1;
+
+function debug(bool, breezes, board)
+if bool
+    breezes
+    board
+end
+    
