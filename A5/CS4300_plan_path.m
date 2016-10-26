@@ -25,9 +25,6 @@ plan = [];
 
 % find te astar results
 [so no] = CS4300_Wumpus_A_star(astar_pathable, curr_state, goal_state, 'CS4300_A_star_Man');
-        
-disp (sprintf('solution from %d %d to %d %d', curr_state(1), curr_state(2), goal_state(1), goal_state(2)));
-disp(so);
 
 % add them iteratively to the plan
 [m n] = size(so);

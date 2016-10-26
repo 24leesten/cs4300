@@ -44,6 +44,7 @@ persistent state;
 persistent plan;
 persistent t;
 persistent have_arrow;
+persistent gold_grabbed;
 
 DEBUG = false;
 DEBUG_FUNCTIONS = true;
@@ -57,9 +58,6 @@ LEFT = 3;
 GRAB = 4;
 SHOOT = 5;
 CLIMB = 6;
-
-disp 'percepts';
-disp(percepts);
 
 % PARSE PERCEPTS
 is_stench  = percepts(1);
@@ -76,6 +74,7 @@ already_visited = 0;
 
 if isempty(have_arrow)
     have_arrow = 1;
+    gold_grabbed = 1;
 end
 
 % Initialize the persistent variables on the first call.
@@ -144,18 +143,27 @@ if ~already_visited
 end
 
 if (DEBUG)
+    disp('BREEZE');
     disp(breezes);
+    disp('STENCH');
     disp(stench);
+    disp('VISITED');
     disp(visited);
+    disp('FRONTIER');
     disp(frontier);
+    pause;
 end
 
+if DEBUG_FUNCTION
+    disp(loc);
+end
 % Check for a Glitter
 %   If we get a glitter grab the gold and plan a route out
-if is_glitter
+if is_glitter && ~gold_grabbed
     % the plan is Grab, then Get to safety
     plan = CS4300_back_out(x,y,d, astar_safe_board(visited,1,1));
     plan = [GRAB; plan];
+    gold_grabbed = true;
     if DEBUG_FUNCTIONS && ~isempty(plan)
         disp('found glitter');
     end
@@ -179,28 +187,25 @@ end
 % If the plan is empty, check the frontier for an unvisited safe cell
 %   If we find one then plan to go there
 if isempty(plan)
-    disp(safe);
-    disp(frontier);
     
     [sfy sfx] = find((safe+frontier)==2);
-    disp([fix_y(sfy) sfx]);
     spots = length(sfx);
-    sfy = fix_y(sfy);
-    if spots == 1
-        % plan to go to sfx(1) sfy(1)
-        go_x = sfx(1);
-        go_y = sfy(1);
-    else
-        % plan to go to sfx(randi) sfy(randi)
-        which = randi(spots);
-        go_x = sfx(which);
-        go_y = sfy(which);
+    if spots > 0
+        sfy = fix_y(sfy);
+        if spots == 1
+            % plan to go to sfx(1) sfy(1)
+            go_x = sfx(1);
+            go_y = sfy(1);
+        else
+            % plan to go to sfx(randi) sfy(randi)
+            which = randi(spots);
+            go_x = sfx(which);
+            go_y = sfy(which);
+        end
+        plan_board = astar_safe_board(visited, go_x, go_y);
+        plan = CS4300_plan_path([x y d], [go_x go_y 0], plan_board);
     end
-    plan_board = astar_safe_board(visited, go_x, go_y);
-    plan = CS4300_plan_path([x y d], [go_x go_y 0], plan_board);
-    disp('the plan is: ');
-    disp(plan);
-    disp('done showing plan');
+    
     if DEBUG_FUNCTIONS && ~isempty(plan)
         disp('planned safe route');
     end
@@ -264,9 +269,6 @@ end
 
 action = plan(1);
 plan = plan(2:end);
-
-disp(sprintf('ACTION IS %d', action));
-disp(plan);
 
 % update the state based on the action
 state = [state; CS4300_update_state(loc, action)];
