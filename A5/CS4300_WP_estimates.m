@@ -1,39 +1,40 @@
 function [pits,Wumpus] = CS4300_WP_estimates(breezes,stench,num_trials)
 % CS4300_WP_estimates - estimate pit and Wumpus likelihoods
 % On input:
-% breezes (4x4 Boolean array): presence of breeze percept at cell
-% -1: no knowledge
-% 0: no breeze detected
-% 1: breeze detected
-% stench (4x4 Boolean array): presence of stench in cell
-% -1: no knowledge
-% 0: no stench detected
-% 1: stench detected
-% num_trials (int): number of trials to run (subset will be OK)
+%   breezes (4x4 Boolean array): presence of breeze percept at cell
+%       -1: no knowledge
+%       0: no breeze detected
+%       1: breeze detected
+%   stench (4x4 Boolean array): presence of stench in cell
+%       -1: no knowledge
+%       0: no stench detected
+%       1: stench detected
+%   num_trials (int): number of trials to run (subset will be OK)
 % On output:
-% pits (4x4 [0,1] array): likelihood of pit in cell
-% Wumpus (4x4 [0 to 1] array): likelihood of Wumpus in cell
+%   pits (4x4 [0,1] array): likelihood of pit in cell
+%   Wumpus (4x4 [0 to 1] array): likelihood of Wumpus in cell
 % Call:
-% breezes = -ones(4,4);
-% breezes(4,1) = 1;
-% stench = -ones(4,4);
-% stench(4,1) = 0;
-% [pts,Wumpus] = CS4300_WP_estimates(breezes,stench,10000)
-% pts =
-% 0.2021 0.1967 0.1956 0.1953
-% 0.1972 0.1999 0.2016 0.1980
-% 0.5527 0.1969 0.1989 0.2119
-% 0 0.5552 0.1948 0.1839
+%   breezes = -ones(4,4);
+%   breezes(4,1) = 1;
+%   stench = -ones(4,4);
+%   stench(4,1) = 0;
+%   [pts,Wumpus] = CS4300_WP_estimates(breezes,stench,10000)
+%   pts =
+%   0.2021 0.1967 0.1956 0.1953
+%   0.1972 0.1999 0.2016 0.1980
+%   0.5527 0.1969 0.1989 0.2119
+%   0      0.5552 0.1948 0.1839
 %
-% Wumpus =
-% 0.0806 0.0800 0.0827 0.0720
-% 0.0780 0.0738 0.0723 0.0717
-% 0 0.0845 0.0685 0.0803
-% 0 0 0.0741 0.0812
+%   Wumpus =
+%   0.0806 0.0800 0.0827 0.0720
+%   0.0780 0.0738 0.0723 0.0717
+%   0      0.0845 0.0685 0.0803
+%   0      0      0.0741 0.0812
 % Author:
-% <Your Name>
-% UU
-% Fall 2016
+%   Ryan Keepers
+%   Leland Stenquist
+%   UU
+%   Fall 2016
 %
 
 DEBUG = false;
@@ -59,10 +60,12 @@ Wumpus_boards = zeros(4,4,num_trials);
 pits = zeros(4,4);
 Wumpus = zeros(4,4);
 
+total_stenches = sum(sum(stench==0));
+
 % we need to generate num_trials amount of boards
 for i = 1:num_trials
     add_board = false;
-    % while we are getting bad boards keep loping
+    % while we are getting bad boards keep looping
     while ~add_board
         add_board = true;
         board = CS4300_gen_board(0.20);
@@ -82,7 +85,9 @@ for i = 1:num_trials
                         debug(DEBUG, breezes, board);
                         add_board = false;
                     end
-                    if stench(row,col) ~= -1 && stench(row,col) ~=  percepts(STENCH)
+                    % if the wumpus is alive, and the stench locations
+                    % match our own board.
+                    if total_stenches < 16 && stench(row,col) ~= -1 && stench(row,col) ~=  percepts(STENCH)
                         debug(DEBUG, breezes, board);
                         add_board = false;
                     end
@@ -98,12 +103,9 @@ end
 
 pits = mean(pits_boards, 3);
 Wumpus = mean(Wumpus_boards, 3);
-
-
-
-% fix the y value to operate with the matrix
-function y = fix_y(y)
-y = 4-y+1;
+if total_stenches == 16
+    Wumpus = zeros(4);
+end
 
 function debug(bool, breezes, board)
 if bool

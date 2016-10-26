@@ -20,13 +20,13 @@ function frontier = CS4300_update_frontier(visited)
 %     FAll 2016
 %
 
-frontier = visited;
+frontier = (visited-1)/2;
 
 % go through and make all the cells that are adjacent to a 0 frontier cells
 for r = 1:4
     row = fix_y(r);
     for col =1:4
-        if visited(row, col) == 0
+        if visited(row, col) == 1
             NORTH = row - 1;
             WEST = col - 1;
             SOUTH = row + 1;
@@ -46,7 +46,3 @@ for r = 1:4
         end
     end
 end
-
-% fix the y value to operate with the matrix
-function y = fix_y(y)
-y = 4-y+1;

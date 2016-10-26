@@ -26,27 +26,23 @@ safe = visited;
 for r = 1:4
     row = fix_y(r);
     for col =1:4
-        if visited(row, col) == 0 && stench(row, col) == 0 && breezes(row,col) == 0
+        if visited(row, col) == 1 && stench(row, col) == 0 && breezes(row,col) == 0
             NORTH = row - 1;
             WEST = col - 1;
             SOUTH = row + 1;
             EAST = col + 1;
             if(NORTH > 0)
-                safe(NORTH, col) = 0;
+                safe(NORTH, col) = 1;
             end
             if(WEST > 0)
-                safe(row, WEST) = 0;
+                safe(row, WEST) = 1;
             end
             if(SOUTH < 5)
-                safe(SOUTH, col) = 0;
+                safe(SOUTH, col) = 1;
             end
             if(EAST < 5)
-                safe(row, EAST) = 0;
+                safe(row, EAST) = 1;
             end 
         end
     end
 end
-
-% fix the y value to operate with the matrix
-function y = fix_y(y)
-y = 4-y+1;

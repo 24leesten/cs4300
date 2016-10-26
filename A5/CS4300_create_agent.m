@@ -21,4 +21,4 @@ function agent = CS4300_create_agent(state)
 
 agent.x = state(1);
 agent.y = state(2);
-agent.dir = state(dir);
+agent.dir = state(3);

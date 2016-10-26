@@ -10,13 +10,14 @@ function action = CS4300_MC_HWA(percepts)
 % On output:
 %     action (int): the next action to take
 % Call:
-% action = CS4300_MC_HWA([1 0 0 1 0]);
+%     action = CS4300_MC_HWA([1 0 0 1 0]);
 % Author:
 %     Ryan Keepers
 %     Leland Stenquist
 %     UU
 %     Fall 2016
 %
+
 
 % PERSISTENTS
 % breezes, stench, visited, frontier (4x4 array) meanings
@@ -26,14 +27,14 @@ function action = CS4300_MC_HWA(percepts)
 %      0: false
 % visited
 %     -1: unvisited
-%      0: visited
+%      1: visited
 % frontier
 %     -1: unvisited
 %      1: frontier
 %      0: visited
 % safe
 %     -1: unknown
-%      0: safe
+%      1: safe
 persistent breezes;
 persistent stench;
 persistent visited;
@@ -42,8 +43,12 @@ persistent safe;
 persistent state;
 persistent plan;
 persistent t;
+persistent have_arrow;
 
 DEBUG = false;
+DEBUG_FUNCTIONS = true;
+
+TRIAL_COUNT = 1000;
 
 %ACTIONS
 FORWARD = 1;
@@ -52,6 +57,9 @@ LEFT = 3;
 GRAB = 4;
 SHOOT = 5;
 CLIMB = 6;
+
+disp 'percepts';
+disp(percepts);
 
 % PARSE PERCEPTS
 is_stench  = percepts(1);
@@ -63,7 +71,12 @@ is_scream  = percepts(5);
 loc = [];
 x = 0;
 y = 0;
+d = 0;
 already_visited = 0;
+
+if isempty(have_arrow)
+    have_arrow = 1;
+end
 
 % Initialize the persistent variables on the first call.
 % t
@@ -86,14 +99,14 @@ else
     x = loc(1);
     y = loc(2);
     d = loc(3);
-    if safe(fix_y(y),x) == 0
+    if visited(fix_y(y),x) == 1
         already_visited = 1;
     end
 end
 
 % breezes
 if isempty(breezes)
-    breezes = -ones(4,4);   
+    breezes = -ones(4,4); 
 end
 
 % stench
@@ -123,7 +136,7 @@ if ~already_visited
     %update stench
     stench(fix_y(y),x) = is_stench;
     %update visited
-    visited(fix_y(y),x) = 0;
+    visited(fix_y(y),x) = 1;
     %update frontier
     frontier = CS4300_update_frontier(visited);
     %update safe
@@ -141,12 +154,18 @@ end
 %   If we get a glitter grab the gold and plan a route out
 if is_glitter
     % the plan is Grab, then Get to safety
-    plan = CS4300_back_out(x,y,d,-visited);
+    plan = CS4300_back_out(x,y,d, astar_safe_board(visited,1,1));
     plan = [GRAB; plan];
+    if DEBUG_FUNCTIONS && ~isempty(plan)
+        disp('found glitter');
+    end
 end
 
 % If we hear a scream:
 if is_scream
+    if DEBUG_FUNCTIONS
+        disp('heard scream');
+    end
     %   - check if the cell we are on has a stench
     %   - check if the plan is empty
     if stench(fix_y(y), x) == 1 && isempty(plan)
@@ -154,32 +173,112 @@ if is_scream
         plan = [FOREWARD];
     end
     %   - clear the stench board the wumpus is dead.
-    stench = zeroes(4,4);
+    stench = zeros(4,4);
 end
  
 % If the plan is empty, check the frontier for an unvisited safe cell
 %   If we find one then plan to go there
-if  isempty(plan)
+if isempty(plan)
+    disp(safe);
+    disp(frontier);
     
+    [sfy sfx] = find((safe+frontier)==2);
+    disp([fix_y(sfy) sfx]);
+    spots = length(sfx);
+    sfy = fix_y(sfy);
+    if spots == 1
+        % plan to go to sfx(1) sfy(1)
+        go_x = sfx(1);
+        go_y = sfy(1);
+    else
+        % plan to go to sfx(randi) sfy(randi)
+        which = randi(spots);
+        go_x = sfx(which);
+        go_y = sfy(which);
+    end
+    plan_board = astar_safe_board(visited, go_x, go_y);
+    plan = CS4300_plan_path([x y d], [go_x go_y 0], plan_board);
+    disp('the plan is: ');
+    disp(plan);
+    disp('done showing plan');
+    if DEBUG_FUNCTIONS && ~isempty(plan)
+        disp('planned safe route');
+    end
 end
 
 % If the plan is empty, do we still have an arrow
-%   Search for the wumpus
-%     plan a route to shoot the wumpus.
+if have_arrow && isempty(plan)
+    %   Search for the wumpus and shoot it if possible.
+    [pits, wumps] = CS4300_WP_estimates(breezes, stench, TRIAL_COUNT);
+    plan = CS4300_plan_shot(CS4300_create_agent(loc), wumps, visited, safe, []);
+    if DEBUG_FUNCTIONS && ~isempty(plan)
+        disp('hunting a wumpus');
+    end
+end
 
 % If the plan is empty take the move with the least risk
+if isempty(plan)
+    [pits, wumps] = CS4300_WP_estimates(breezes, stench, TRIAL_COUNT);
+    danger = pits + wumps;
+    only_frontier = frontier == 1;
+    for r = 1:4
+        for c = 1:4
+            danger(r,c) = danger(r,c) * only_frontier(r,c);
+        end
+    end
+
+    if DEBUG 
+        disp 'stench';
+        disp(stench);
+        disp 'breezes';
+        disp(breezes);
+        disp 'safe';
+        disp(safe);
+        disp 'visited';
+        disp(visited);
+        disp 'pits';
+        disp(pits);
+        disp 'wumps';
+        disp(wumps);
+        disp 'frontier';
+        disp(frontier);
+        disp 'onlyfrontier';
+        disp(only_frontier);
+        disp 'danger';
+        disp(danger);
+    end
+    
+    [min_y min_x] = find(danger == min(min(danger(danger>0))));
+    min_y = fix_y(min_y);
+    plan_board = astar_safe_board(visited, min_x, min_y);
+    plan = CS4300_plan_path([x y d], [min_x min_y 0], plan_board);
+    if DEBUG_FUNCTIONS && ~isempty(plan)
+        disp('taking a risk');
+    end
+end
 
 % return the action
+if isempty(plan)
+    disp ('OH MAN WE SHOULD HAVE A PLAN BY NOW!');
+end
+
 action = plan(1);
 plan = plan(2:end);
 
+disp(sprintf('ACTION IS %d', action));
+disp(plan);
+
 % update the state based on the action
 state = [state; CS4300_update_state(loc, action)];
+
+if action==SHOOT
+    if DEBUG_FUNCTIONS
+        disp('shot an arrow');
+    end
+    have_arrow = 0;
+end
 
 %{
     HELPER FUNCTIONS
 %}
 
-% fix the y value to operate with the matrix
-function y = fix_y(y)
-y = 4-y+1;
