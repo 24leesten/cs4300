@@ -51,6 +51,14 @@ CLIMB = 6;
 
 % find the position of the wumpus
 [max_y target_x] = find(Wumpus == max(max(Wumpus)));
+
+% might have more than one maximum.  Pick at random.
+if length(target_x) > 1
+    which = randi(length(target_x));
+    target_x = target_x(which);
+    max_y = max_y(which);
+end
+
 target_y = fix_y(max_y);
 
 plan = [];

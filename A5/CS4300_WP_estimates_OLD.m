@@ -61,21 +61,17 @@ Wumpus = zeros(4,4);
 total_stenches = sum(sum(stench==0));
 
 % we need to generate num_trials amount of boards
-% breezes only
 for i = 1:num_trials
     add_board = false;
     % while we are getting bad boards keep looping
     while ~add_board
         add_board = true;
-        % generate random board
         board = CS4300_gen_board(0.20);
-        
-        % check each location on our breezes and the generated board
         for r = 1:4
             row = fix_y(r);          
             for col = 1:4
                 % only check the board if the locations known
-                if breezes(row,col) ~= -1
+                if breezes(row,col) ~= -1 || stench(row,col) ~= -1
                     % get the percepts based on the board generated for that
                     %     postition
                     agent.x = col;
@@ -86,55 +82,26 @@ for i = 1:num_trials
                         debug(DEBUG, breezes, board);
                         add_board = false;
                     end
+                    % if the wumpus is alive, then the stench locations
+                    % need to match our board.
+                    if total_stenches < 16 && stench(row,col) ~= -1 && stench(row,col) ~=  percepts(STENCH)
+                        debug(DEBUG, breezes, board);
+                        add_board = false;
+                    end
                 end
             end       
         end
         if add_board
             pits_boards(:,:,i) = (board == PIT);
-        end
-    end
-end
-
-% stenches only
-if total_stenches < 16
-    for i = 1:num_trials
-        add_board = false;
-        while ~add_board
-            add_board = true;
-            % generate random board
-            board = CS4300_gen_board(0);
-
-            % check each location on our stenches and the generated board
-            for r = 1:4
-                row = fix_y(r);
-                for col = 1:4
-                    if stench(row,col) ~= -1
-                        % get the percepts based on the board generated for that
-                        %     postition
-                        agent.x = col;
-                        agent.y = r; 
-                        percepts = CS4300_get_percept(board, agent, false, false);
-
-                        % then the stench locations need to match our board.
-                        if stench(row,col) ~= -1 && stench(row,col) ~=  percepts(STENCH)
-                            debug(DEBUG, breezes, board);
-                            add_board = false;
-                        end
-                    end
-                end
-            end
-            if add_board
-                Wumpus_boards(:,:,i) = (board == WUMPUS);
-            end
+            Wumpus_boards(:,:,i) = (board == WUMPUS);
         end
     end
 end
 
 pits = mean(pits_boards, 3);
+Wumpus = mean(Wumpus_boards, 3);
 if total_stenches == 16
     Wumpus = zeros(4);
-else
-    Wumpus = mean(Wumpus_boards, 3);
 end
 
 function debug(bool, breezes, board)

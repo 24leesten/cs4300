@@ -47,7 +47,7 @@ persistent have_arrow;
 persistent gold_grabbed;
 
 DEBUG = false;
-DEBUG_FUNCTIONS = true;
+DEBUG_FUNCTIONS = false;
 
 TRIAL_COUNT = 1000;
 
@@ -74,7 +74,7 @@ already_visited = 0;
 
 if isempty(have_arrow)
     have_arrow = 1;
-    gold_grabbed = 1;
+    gold_grabbed = 0;
 end
 
 % Initialize the persistent variables on the first call.
@@ -154,8 +154,9 @@ if (DEBUG)
     pause;
 end
 
-if DEBUG_FUNCTION
+if DEBUG_FUNCTIONS
     disp(loc);
+    disp(frontier);
 end
 % Check for a Glitter
 %   If we get a glitter grab the gold and plan a route out
@@ -165,7 +166,7 @@ if is_glitter && ~gold_grabbed
     plan = [GRAB; plan];
     gold_grabbed = true;
     if DEBUG_FUNCTIONS && ~isempty(plan)
-        disp('found glitter');
+        disp('found glitter. goin home!');
     end
 end
 
@@ -178,7 +179,7 @@ if is_scream
     %   - check if the plan is empty
     if stench(fix_y(y), x) == 1 && isempty(plan)
         % move foreward
-        plan = [FOREWARD];
+        plan = [FORWARD];
     end
     %   - clear the stench board the wumpus is dead.
     stench = zeros(4,4);
@@ -225,38 +226,41 @@ end
 if isempty(plan)
     [pits, wumps] = CS4300_WP_estimates(breezes, stench, TRIAL_COUNT);
     danger = pits + wumps;
+    
+    % if a board has 0 danger, we need to handle it
+    if sum(danger(danger>0)) == 0
+        disp('STILL HITTING THAT CORNER CASE, BOSS');
+        disp('visited');
+        disp(visited);
+        disp('frontier');
+        disp(frontier);
+        disp('danger');
+        disp(danger);
+    end
+    
     only_frontier = frontier == 1;
     for r = 1:4
         for c = 1:4
             danger(r,c) = danger(r,c) * only_frontier(r,c);
         end
     end
-
-    if DEBUG 
-        disp 'stench';
-        disp(stench);
-        disp 'breezes';
-        disp(breezes);
-        disp 'safe';
-        disp(safe);
-        disp 'visited';
-        disp(visited);
-        disp 'pits';
-        disp(pits);
-        disp 'wumps';
-        disp(wumps);
-        disp 'frontier';
-        disp(frontier);
-        disp 'onlyfrontier';
-        disp(only_frontier);
-        disp 'danger';
-        disp(danger);
+    
+    % find the minimum danger location
+    [min_y min_x] = find(danger == min(min(danger(danger>0))));
+    
+    % there might be more than one minimum.  Pick randomly.
+    if length(min_x) > 1
+        which = randi(length(min_x));
+        min_x = min_x(which);
+        min_y = min_y(which);
     end
     
-    [min_y min_x] = find(danger == min(min(danger(danger>0))));
     min_y = fix_y(min_y);
+    % get a board which will provide a safe path to that location
     plan_board = astar_safe_board(visited, min_x, min_y);
-    plan = CS4300_plan_path([x y d], [min_x min_y 0], plan_board);
+    nextplan = CS4300_plan_path([x y d], [min_x min_y 0], plan_board);
+    plan = nextplan;
+    
     if DEBUG_FUNCTIONS && ~isempty(plan)
         disp('taking a risk');
     end
@@ -278,6 +282,10 @@ if action==SHOOT
         disp('shot an arrow');
     end
     have_arrow = 0;
+end
+
+if DEBUG_FUNCTIONS
+    disp(sprintf('action: %d', action));
 end
 
 %{
