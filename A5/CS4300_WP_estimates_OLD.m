@@ -1,4 +1,4 @@
-function [pits,Wumpus] = CS4300_WP_estimates(breezes,stench,num_trials)
+function [pits,Wumpus] = CS4300_WP_estimates_OLD(breezes,stench,num_trials)
 % CS4300_WP_estimates - estimate pit and Wumpus likelihoods
 % On input:
 %   breezes (4x4 Boolean array): presence of breeze percept at cell

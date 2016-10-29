@@ -45,11 +45,13 @@ persistent plan;
 persistent t;
 persistent have_arrow;
 persistent gold_grabbed;
+persistent pits;
+persistent wumps;
 
 DEBUG = false;
 DEBUG_FUNCTIONS = false;
 
-TRIAL_COUNT = 1000;
+TRIAL_COUNT = 50;
 
 %ACTIONS
 FORWARD = 1;
@@ -140,6 +142,11 @@ if ~already_visited
     frontier = CS4300_update_frontier(visited);
     %update safe
     safe = CS4300_update_safe(visited, stench, breezes);
+	
+	% update the pit and wumpus probs
+	if ~is_glitter
+		[pits, wumps] = CS4300_WP_estimates(breezes, stench, TRIAL_COUNT);
+	end
 end
 
 if (DEBUG)
@@ -215,7 +222,6 @@ end
 % If the plan is empty, do we still have an arrow
 if have_arrow && isempty(plan)
     %   Search for the wumpus and shoot it if possible.
-    [pits, wumps] = CS4300_WP_estimates(breezes, stench, TRIAL_COUNT);
     plan = CS4300_plan_shot(CS4300_create_agent(loc), wumps, visited, safe, []);
     if DEBUG_FUNCTIONS && ~isempty(plan)
         disp('hunting a wumpus');
@@ -224,7 +230,6 @@ end
 
 % If the plan is empty take the move with the least risk
 if isempty(plan)
-    [pits, wumps] = CS4300_WP_estimates(breezes, stench, TRIAL_COUNT);
     danger = pits + wumps;
     
     % if a board has 0 danger, we need to handle it

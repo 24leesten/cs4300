@@ -8,7 +8,7 @@ function [scores,successes,times] = CS4300_WWMC(max_steps,f_name)
 %     successes (1x250 int vector): agent successes on all 250 boards
 %     times (1x250 dbl vector): time on all 250 boards
 % Call:
-%     [s,c,t] = CS4300_WWMC(50,'CS4300_hybrid_agent');
+%     [s,c,t] = CS4300_WWMC(50,'CS4300_MC_HWA');
 % Author:
 %     Ryan Keepers
 %     Leland Stenquist
