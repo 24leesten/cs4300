@@ -130,8 +130,13 @@ if isempty(safe)
     safe = -ones(4,4);
 end
 
-% we need to update our boards
-if ~already_visited
+% we sometimess need to update our boards
+if ~already_visited || is_scream
+    if is_scream
+        %   - clear the stench board, the wumpus is dead.
+        stench = zeros(4,4);
+    end
+    
     %update breezes
     breezes(fix_y(y),x) = is_breeze;
     %update stench
@@ -164,6 +169,7 @@ end
 if DEBUG_FUNCTIONS
     disp(loc);
     disp(frontier);
+    disp(wumps + pits);
 end
 % Check for a Glitter
 %   If we get a glitter grab the gold and plan a route out
@@ -188,8 +194,6 @@ if is_scream
         % move foreward
         plan = [FORWARD];
     end
-    %   - clear the stench board the wumpus is dead.
-    stench = zeros(4,4);
 end
  
 % If the plan is empty, check the frontier for an unvisited safe cell
@@ -284,7 +288,7 @@ state = [state; CS4300_update_state(loc, action)];
 
 if action==SHOOT
     if DEBUG_FUNCTIONS
-        disp('shot an arrow');
+        disp(sprintf('shot an arrow at %d %d %d', loc(1), loc(2), loc(3)));
     end
     have_arrow = 0;
 end

@@ -87,7 +87,8 @@ if ~goal_found
 end
 
 % find the a_star solution
-[so no] = CS4300_Wumpus_A_star(visited, [agent.x agent.y agent.dir], goal, 'CS4300_A_star_Man');
+path = astar_safe_board(visited,agent.x,agent.y);
+[so no] = CS4300_Wumpus_A_star(path, [agent.x agent.y agent.dir], goal, 'CS4300_A_star_Man');
 [m n] = size(so);
 
 % start with our current facing direction.
