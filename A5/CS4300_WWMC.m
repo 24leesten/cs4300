@@ -15,10 +15,6 @@ function [scores,successes,times] = CS4300_WWMC(max_steps,f_name)
 %     UU
 %     Summer 2015
 %
-
-scores = zeros(1,250);
-successes = zeros(1,250);
-
 agent.x = 1;
 agent.y = 1;
 agent.alive = 1;  
@@ -27,24 +23,58 @@ agent.dir = 0;  % facing right
 agent.succeed = 0;  % has gold and climbed out
 agent.climbed = 0; % climbed out
 
-
 all_boards = load('A5_boards.mat');
 
-% run 250 different trials
-for b = 1:250    
-    clear(f_name);
-    disp(sprintf('board num %d', b));
-    % load the current board
-    curr_board = all_boards.boards(b).board;
-    disp(curr_board);
-    tic;
-    [score,trace] = CS4300_WW1(max_steps,f_name,curr_board);
-    times(b) = toc;
+RUN_ALL = 0;
+
+if RUN_ALL
+    scores = zeros(1,250);
+    successes = zeros(1,250);
+    times = zeros(1,250);
     
-    % record the answer
-    scores(b) = score;
-    successes(b) = trace(length(trace)).agent.succeed;
+    % run 250 different trials
+    for b = 1:250    
+        clear(f_name);
+        % load the current board
+        curr_board = all_boards.boards(b).board;
+        tic;
+        [score,trace] = CS4300_WW1(max_steps,f_name,curr_board);
+        times(b) = toc;
+
+        % record the answer
+        scores(b) = score;
+        successes(b) = trace(length(trace)).agent.succeed;
+    end
+else
+    scores = zeros(1,50);
+    successes = zeros(1,50);
+    times = zeros(1,50);
+
+    % run the first 50 boards 50 times each
+    for b = 1:50
+        avg_time = zeros(1,50);
+        avg_succeed = zeros(1,50);
+        avg_score = zeros(1,50);
+        
+        for trial = 1:50
+            clear(f_name);
+            % load the current board
+            curr_board = all_boards.boards(b).board;
+            
+            tic;
+            [score,trace] = CS4300_WW1(max_steps,f_name,curr_board);
+            
+            avg_time(trial) = toc;
+            avg_succeed(trial) = trace(length(trace)).agent.succeed;
+            avg_score(trial) = score;
+        end
+        % record the answers
+        times(b) = mean(avg_time);
+        scores(b) = mean(avg_score);
+        successes(b) = mean(avg_succeed);
+    end
 end
+
 
 %{
 disp 'ONE';
