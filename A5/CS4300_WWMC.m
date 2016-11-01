@@ -25,7 +25,7 @@ agent.climbed = 0; % climbed out
 
 all_boards = load('A5_boards.mat');
 
-RUN_ALL = 0;
+RUN_ALL = 1;
 
 if RUN_ALL
     scores = zeros(1,250);
