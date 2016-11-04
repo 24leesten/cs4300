@@ -24,9 +24,59 @@ x0,y0,vx0,vy0,max_time,del_t,theta)
 %
 
 % Constants
-GRAVITY = -9.81;
-ALPHA_LINEAR = 0;
-ALPHA_PROJ = 1;
-T_MAX_LINEAR = 20;
-T_MAX_PROJ = 70;
-DELTA_T = 0.05;
+ALPHA = 0;
+GRAVITY = -9.81 * ALPHA;
+SIGMA2 = 0.1;
+SIGMA2Z = 0.25;
+
+% Let's Add in the ideal
+time_vals = [0:del_t:max_time];
+num_time_vals = length(time_vals);
+
+x_trace = zeros(num_time_vals,2);
+a_trace = zeros(num_time_vals,2);
+z_trace = zeros(num_time_vals,2);
+Sigma2_trace = [];
+
+x_model = x0;
+x_noisy = x_model;
+x_sensor = x_model;
+y_model(1) = y0;
+y_noisy = y_model;
+y_sensor = y_model;
+
+v_x = vx0;
+v_y = vy0;
+
+A = eye(2);
+B = A * del_t;
+R = A * SIGMA2;
+Q = A * SIGMA2Z;
+
+mu = [x0; y0];
+var = zeros(2);
+
+for s=1:num_time_vals 
+   %record the current x,y
+   x_trace(s,:) = [mu(1) mu(2)];
+   a_trace(s,:) = [x_noisy y_noisy];
+   z_trace(s,:) = [x_sensor y_sensor];
+   Sigma2_trace(s).Sigma2 = var;
+   
+   v_y = CS4300_update_velocity(v_y, GRAVITY, del_t);
+   [x_model, y_model] = CS4300_projectile_model(x_model, vx0, y_model,v_y,del_t);
+   
+   if(y_model < 0)
+       y_model = abs(y_model);
+       v_y = -v_y;
+   end
+ 
+   x_noisy = x_model + sqrt(SIGMA2)*randn;
+   y_noisy = y_model + sqrt(SIGMA2)*randn;
+   
+   [x_sensor,y_sensor] = CS4300_projectile_sensor(x_model, y_model, 1, SIGMA2Z);
+   
+   [mu, var] = CS4300_KF(mu, var, [v_x, v_y]', [x_sensor, y_sensor]', A, B, R, eye(2), Q);
+   
+end
+

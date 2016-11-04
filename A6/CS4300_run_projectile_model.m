@@ -46,4 +46,5 @@ for s = 1:num_t_vals
     plot([0,0],[-1,100]);
     plot(x(s+1),y(s+1),'ko');
     M(s+1) = getframe;
+    pause(0.25);
 end

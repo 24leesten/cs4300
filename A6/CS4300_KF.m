@@ -7,7 +7,7 @@ B_t,C_t,Q_t)
 %   u_t (nx1 vector): control vector
 %   z_t (nx1 vector): measurement vector
 %   A_t (nxn matrix): state transition matrix
-%   R_t (nxn matrix): statre transition covariance matrix
+%   R_t (nxn matrix): state transition covariance matrix
 %   C_t (nxn matrix): linear transform for measurement equation
 %   Q_t (nxn matrix): noise covariance matrix
 % On output:
@@ -20,3 +20,31 @@ B_t,C_t,Q_t)
 %   UU
 %   Fall 2016
 %
+
+DEBUG = 0;
+
+if DEBUG
+    disp 'A';
+    disp(A_t);
+    disp 'mu tm1';
+    disp (mu_tm1);
+    disp 'B';
+    disp (B_t);
+    disp 'u';
+    disp (u_t);
+end
+
+% mu = A*u_t-1 + B*u_t
+mu_t = A_t * mu_tm1 + B_t * u_t;
+
+% SIGMA = A*SIGMA_t-1*AT + R
+Sigma_t = A_t * Sigma_tm1 * A_t' + R_t;
+
+% K = SIGMA*CT*inv(C*SIGMA*CT + Q)
+K = Sigma_t * C_t' * inv(C_t * Sigma_t * C_t' + Q_t);
+
+% mu_t = mu + K*(z_t - C*mu)
+mu_t = mu_t + K * (z_t - C_t * mu_t);
+
+% SIGMA_t = (I-K*C)*SIGMA
+Sigma_t = (eye(length(u_t)) - K * C_t) * Sigma_t;

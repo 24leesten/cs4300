@@ -50,7 +50,7 @@ for s = 1:num_t_vals
         y(s+1) = abs(y(s+1));
         v(s+1) = -v(s+1);
     end
-    z(s+1) = CS4300_fall_sensor(y(s+1),1,sigma2_z);
+    z(s+1) = CS4300_fall_sensor(y(s+1),1,sigma2_z); % sensor y
     clf
     plot([-10,10],[0,0]);
     hold on
