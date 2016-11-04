@@ -27,6 +27,5 @@ x0,y0,vx0,vy0,max_time,del_t,theta)
 GRAVITY = -9.81;
 ALPHA_LINEAR = 0;
 ALPHA_PROJ = 1;
-T_MAX_LINEAR = 20;
-T_MAX_PROJ = 70;
-DELTA_T = 0.05;
+T_MAX_LINEAR = 
+T_MAX_PROJ = 
