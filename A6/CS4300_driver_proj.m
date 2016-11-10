@@ -49,8 +49,8 @@ St = [];
 % This is where we are initializing velocity and position
 x0 = 0;
 y0 = 0;
-vx0 = 10;
-vy0 = 30;
+vx0 = 200;
+vy0 = 200;
 
 x_bar = [x0; y0; 0; 0];
 
