@@ -1,4 +1,4 @@
-function CS4300_A6_plot_vel(x, a)
+function CS4300_A6_plotter(x,a,z)
 % CS4300_A5_driver_lin - driver function for linear Kalman Filter
 % On input:
 %   x (1xn vector): estimates locations
@@ -14,7 +14,8 @@ function CS4300_A6_plot_vel(x, a)
 %
 
 clf;
-plot(a(:,1),a(:,2), 'r--');
+plot(z(:,1),z(:,2), 'g.');
 hold on;
+plot(a(:,1),a(:,2), 'r--');
 plot(x(:,1),x(:,2), 'b');
-legend('actual', 'estimate');
+legend('sensor', 'actual', 'estimate');
