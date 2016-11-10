@@ -46,55 +46,68 @@ time_vals = [0:dt:t_max];
 num_time_vals = length(time_vals);
 St = [];
 
+% This is where we are initializing velocity and position
 x0 = 0;
 y0 = 0;
-vx0 = 20;
-vy0 = 100;
+vx0 = 10;
+vy0 = 30;
 
-x_model = x0;
-x_noisy = x_model;
-x_sensor = x_model;
-y_model(1) = y0;
-y_noisy = y_model;
-y_sensor = y_model;
+x_bar = [x0; y0; 0; 0];
 
-v_x = vx0;
-v_y = vy0;
+A = eye(4);
+A(1,3) = dt;
+A(2,4) = dt;
 
-A = eye(2);
-B = A * dt;
-R = A * SIGMA2;
-Q = A * SIGMA2Z;
+B = [(dt^2)/2, 0          ;
+     0,        (dt^2)/2   ;
+     dt,       0          ;
+     0,        dt         ];
+ 
+u_bar = [0; GRAVITY;];
 
-mu = [x0; y0];
-var = zeros(2);
+R = eye(4) * SIGMA2;
+Q = eye(4) * SIGMA2Z;
+C = [1 0 0 0;
+     0 1 0 0;
+     0 0 0 0;
+     0 0 0 0];
 
-xt = [mu(1), mu(2)];
-at = [x_noisy, y_noisy];
-zt = [x_sensor, y_sensor];
+var = [ sqrt(SIGMA2)*randn 0 0 0;
+        0 sqrt(SIGMA2)*randn 0 0;
+        0 0 sqrt(SIGMA2)*randn 0;
+        0 0 0 sqrt(SIGMA2)*randn ];
+
+x_upd = [x0;y0;vx0;vy0];
+x_actual = x_upd;
+z_bar = x_upd;
+
+xt = [x_bar'];
+at = [x_actual'];
+zt = [z_bar'];
+
 
 for s=1:num_time_vals   
-   v_y = CS4300_update_velocity(v_y, GRAVITY, dt);
-   [x_model, y_model] = CS4300_projectile_model(x_model, vx0, y_model,v_y,dt);
+   %ideal
+   x_upd = A * x_actual + B * u_bar;   
+   %actual
+   x_actual = x_upd + R * [randn; randn; randn; randn];   
    
-   if(y_model < 0)
-       y_model = abs(y_model);
-       v_y = -v_y;
+   if(x_actual(2) < 0)
+       x_actual(2) = abs(x_actual(2));
+       x_actual(4) = -x_actual(4);
    end
- 
-   x_noisy = x_model + sqrt(SIGMA2)*randn;
-   y_noisy = y_model + sqrt(SIGMA2)*randn;
    
-   [x_sensor,y_sensor] = CS4300_projectile_sensor(x_model, y_model, 1, SIGMA2Z);
+   %sensor
+   z_bar = C * x_actual + R * [randn; randn; 0; 0];
    
-   [mu, var] = CS4300_KF(mu, var, [v_x, v_y]', [x_sensor, y_sensor]', A, B, R, eye(2), Q);
-   
-      %record the current x,y
+   %kf
+   [x_bar, var] = CS4300_KF(x_bar, var, u_bar, z_bar, A, R, B, C, Q);
+      
+  %record the current x,y
    if mod(dt*s, obs_freq) == 0
-       xt = [xt;[mu(1) mu(2)]];
-       at = [at; [x_noisy y_noisy]];
-       zt = [zt; [x_sensor y_sensor]];
+       xt = [xt;x_bar'];
+       at = [at;x_actual'];
+       zt = [zt;z_bar'];
        St(s).Sigma2 = var;
    end   
 end
-

@@ -48,8 +48,12 @@ y_sensor = y_model;
 v_x = vx0;
 v_y = vy0;
 
-A = eye(2);
-B = A * (del_t^2)/2;
+x_bar = [x0; y0; v_x; v_y];
+A = eye(4);
+A(1,3) = del_t;
+A(2,4) = del_t;
+B = [(del_t^2)/2 0; 0 (del_t^2)/2; del_t 0; 0 del_t];
+u_bar = [0; 0]
 R = A * SIGMA2;
 Q = A * SIGMA2Z;
 
@@ -63,7 +67,7 @@ for s=1:num_time_vals
    z_trace(s,:) = [x_sensor y_sensor];
    Sigma2_trace(s).Sigma2 = var;
    
-   v_y = CS4300_update_velocity(v_y, GRAVITY, del_t);
+   x_bar = (A * x_bar) + (B * u_bar);
    [x_model, y_model] = CS4300_projectile_model(x_model, vx0, y_model,v_y,del_t);
    
    if(y_model < 0)

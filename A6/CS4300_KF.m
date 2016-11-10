@@ -32,13 +32,33 @@ if DEBUG
     disp (B_t);
     disp 'u';
     disp (u_t);
+    disp '=============================================';
 end
 
 % mu = A*u_t-1 + B*u_t
 mu_t = A_t * mu_tm1 + B_t * u_t;
 
+if DEBUG
+    disp 'Sig tm1';
+    disp(Sigma_tm1);
+    disp 'R';
+    disp(R_t);
+    disp '=============================================';
+end
+
 % SIGMA = A*SIGMA_t-1*AT + R
 Sigma_t = A_t * Sigma_tm1 * A_t' + R_t;
+
+if DEBUG
+    disp 'C';
+    disp (C_t);
+    disp 'Q';
+    disp (Q_t);
+    disp 'Sigma_t';
+    disp (Sigma_t);
+    disp (C_t * Sigma_t * C_t' + Q_t);
+    disp '=============================================';
+end
 
 % K = SIGMA*CT*inv(C*SIGMA*CT + Q)
 K = Sigma_t * C_t' * inv(C_t * Sigma_t * C_t' + Q_t);
@@ -46,5 +66,16 @@ K = Sigma_t * C_t' * inv(C_t * Sigma_t * C_t' + Q_t);
 % mu_t = mu + K*(z_t - C*mu)
 mu_t = mu_t + K * (z_t - C_t * mu_t);
 
+I = eye(length(z_t));
+
+if DEBUG
+    disp 'K';
+    disp (K);
+    disp 'I';
+    disp (I);
+    disp '=============================================';
+end
+
+
 % SIGMA_t = (I-K*C)*SIGMA
-Sigma_t = (eye(length(u_t)) - K * C_t) * Sigma_t;
+Sigma_t = (I - K * C_t) * Sigma_t;
