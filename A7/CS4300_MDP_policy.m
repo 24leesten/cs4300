@@ -11,7 +11,8 @@ function policy = CS4300_MDP_policy(S,A,P,U)
 % Call:
 %     p = CS4300_MDP_policy(S,A,P,U);
 % Author:
-%     Your name
+%     Ryan Keepers
+%     Leland Stenquist
 %     UU
 %     Fall 2016
 %

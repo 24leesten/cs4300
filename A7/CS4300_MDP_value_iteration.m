@@ -27,7 +27,34 @@ eta,max_iter)
 %                          V
 %                          3
 % Author:
-%     Your name
+%     Ryan Keepers
+%     Leland Stenquist
 %     UU
 %     Fall 2016
 %
+
+% States
+% the board is laid out 1..12
+% treat these as states
+% state utilities is similar to the board on page 651
+
+delta = 0;
+U = zeros(length(S));
+U_trace = U;
+U_prime = U;
+
+while delta < (eta * ((1 - gamma)/gamma))
+    U = U_prime;
+    delta = 0;
+    for state = 1:length(S)
+        max_a = 0;
+        for a = 1:length(A)
+            % Sum each state that can be reached
+            % P(s_prime | s,a) * U(s_prime)
+        end
+        U_prime(state) = R(state) + gamma * max_a;
+        
+        delta = max(abs(U_prime(state) - U(state)),delta);
+    end
+    U_trace = [U_trace; U_prime];    
+end
