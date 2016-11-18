@@ -46,8 +46,6 @@ eta,max_iter)
 
 % no input exists for board dimensions
 % so we're stating them here as constants
-ROWS = 3;
-COLS = 4;
 
 U = zeros(1,length(S));
 U_trace = U;

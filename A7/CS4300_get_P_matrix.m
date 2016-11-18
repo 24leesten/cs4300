@@ -1,4 +1,4 @@
-function P = CS4300_get_P_matrix(states, actions)
+function P = CS4300_get_P_matrix(states, actions, isWumpus)
 % CS4300_get_P_matrix - take in a state and action and return the
 % probability of getting to each neighboring state from there.
 % On input:
@@ -17,9 +17,6 @@ function P = CS4300_get_P_matrix(states, actions)
 %     UU
 %     Fall 2016
 %
-
-WUMPUS = true;
-
 ROWS = length(states);
 COLS = length(actions);
 
@@ -27,8 +24,7 @@ P = [];
 
 for s = 1:ROWS
     for a = 1:COLS
-
-        if WUMPUS
+        if isWumpus
             P(s,a).probabilities = CS4300_get_state_probs(s,a,4,4);
         else
             P(s,a).probabilities = CS4300_book_board_probs(s,a,3,4);
