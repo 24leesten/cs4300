@@ -18,6 +18,8 @@ function P = CS4300_get_P_matrix(states, actions)
 %     Fall 2016
 %
 
+WUMPUS = true;
+
 ROWS = length(states);
 COLS = length(actions);
 
@@ -25,6 +27,11 @@ P = [];
 
 for s = 1:ROWS
     for a = 1:COLS
-        P(s,a).probabilities = CS4300_state_probs(s,a,3,4);
+
+        if WUMPUS
+            P(s,a).probabilities = CS4300_get_state_probs(s,a,4,4);
+        else
+            P(s,a).probabilities = CS4300_book_board_probs(s,a,3,4);
+        end
     end
 end
