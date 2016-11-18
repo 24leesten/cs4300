@@ -1,10 +1,9 @@
-function state_probabilities = CS4300_get_state_probs(state, action, S, rows, cols)
+function state_probabilities = CS4300_get_state_probs(state, action, rows, cols)
 % CS4300_get_state_probs - take in a state and action and return the
 % probability of getting to each neighboring state from there.
 % On input:
 %     state (int): the numeric location on the board 
 %     action (int): the action being taken
-%     S (1xn int vector): the states on the board
 %     rows (int): the number of rows on the board
 %     cols (int): the number of columnts on the board
 % On output:
@@ -13,7 +12,6 @@ function state_probabilities = CS4300_get_state_probs(state, action, S, rows, co
 % Call:
 %     state = 6;
 %     action = 1;
-%     S = [1:12];
 %     rows = 3;
 %     cols = 4;
 %     [xp,yp] = CS4300_get_state_probs(state,action, S, rows, cols);

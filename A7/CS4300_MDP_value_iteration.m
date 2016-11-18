@@ -43,28 +43,34 @@ eta,max_iter)
 ROWS = 3;
 COLS = 4;
 
-delta = 0;
-U = zeros(length(S));
+U = zeros(1,length(S));
 U_trace = U;
 U_prime = U;
 
-while delta < (eta * ((1 - gamma)/gamma))
+% do until delta < some stuff (see below)
+while true
     U = U_prime;
     delta = 0;
     for state = 1:length(S)
         max_a = 0;
+        
         for a = 1:length(A)
-            % Sum each state that can be reached
-            probs = CS4300_get_state_probs(s,a,ROWS,COLS);
-            % P(s_prime | s,a) * U(s_prime)
-            sum = CS4300_sumation(probs, U);
+            % summation performs: SUM[ P(s_prime | s,a) * U(s_prime) ]
+            sum = CS4300_summation(P(state,a).probabilities, U);
             if sum > max_a
                 max_a = sum;
             end
         end
-        U_prime(state) = R(state) + gamma * max_a;
         
+        U_prime(state) = R(state) + gamma * max_a;
+        U_prime = CS4300_preserve_static_utilities(U_prime);
         delta = max(abs(U_prime(state) - U(state)),delta);
+        
     end
-    U_trace = [U_trace; U_prime];    
+    U_trace = [U_trace; U_prime];
+    
+    if delta < (eta * ((1 - gamma)/gamma))
+        break;
+    end
 end
+disp 'BROKE!';
