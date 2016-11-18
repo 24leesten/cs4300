@@ -16,3 +16,19 @@ function policy = CS4300_MDP_policy(S,A,P,U)
 %     UU
 %     Fall 2016
 %
+
+policy = zeros(1,9);
+
+for s=1:length(S)
+    action = 0;
+    best_val = -Inf;
+    
+    for a=1:length(A)
+        sum = CS4300_summation(P(s,a).probabilities, U);
+        if sum > best_val
+            best_val = sum;
+            action = a;
+        end
+    end
+    policy(s) = action;
+end

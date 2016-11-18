@@ -25,6 +25,6 @@ P = [];
 
 for s = 1:ROWS
     for a = 1:COLS
-        P(s,a).probabilities = CS4300_get_state_probs(s,a,3,4);
+        P(s,a).probabilities = CS4300_state_probs(s,a,3,4);
     end
 end
