@@ -1,4 +1,4 @@
-function [row, col] = CS4300_get_state(curr_row, curr_col, cols)
+function state = CS4300_get_state(curr_row, curr_col, cols)
 % CS4300_get_state - take in a location on the board and get the row and col
 %     position
 % On input:
@@ -19,4 +19,14 @@ function [row, col] = CS4300_get_state(curr_row, curr_col, cols)
 %     Fall 2016
 %
 
+
 state = ((curr_row-1)*cols) + curr_col;
+
+% debug
+if false
+    disp(sprintf('curr row %d', curr_row));
+    disp(sprintf('curr col %d', curr_col));
+    disp(sprintf('cols %d', cols));
+    disp(sprintf('state %d', state));
+    disp ' ';
+end
