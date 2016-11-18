@@ -57,6 +57,10 @@ while delta < (eta * ((1 - gamma)/gamma))
             % Sum each state that can be reached
             probs = CS4300_get_state_probs(s,a,ROWS,COLS);
             % P(s_prime | s,a) * U(s_prime)
+            sum = CS4300_sumation(probs, U);
+            if sum > max_a
+                max_a = sum;
+            end
         end
         U_prime(state) = R(state) + gamma * max_a;
         
