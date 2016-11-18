@@ -13,8 +13,14 @@ eta,max_iter)
 %     U (vector): state utilities
 %     U_trace (iterxn): trace of utility values during iteration
 % Call:
-% S = [1:12]
-% [U,Ut] = CS4300_run_value_iteration(S,A,P,R,g,e,m)
+% S = [1:12];
+% A = [1:4];
+% P = CS4300_get_P_matrix(S,A);
+% R = [-0.04 -0.04 -0.04 -0.04 -0.04 -0.04 -0.04 -1 -0.04 -0.04 -0.04 1];
+% g = 0.9999;
+% e = 0.1;
+% m = 100000000;
+% [U,Ut] = CS4300_MDP_value_iteration(S,A,P,R,g,e,m);
 %
 % U’ =  0.7053 0.6553 0.6114 0.3879 0.7616 0 0.6600 -1.0000
 %       0.8116 0.8678 0.9178 1.0000
