@@ -17,6 +17,15 @@ function UPrime = CS4300_preserve_static_utilities(U)
 
 UPrime = U;
 
-UPrime(12) = 1;
-UPrime(8) = -1;
-UPrime(6) = 0;
+WUMPUS = true;
+
+if WUMPUS
+    UPrime(16) = 1;  % gold
+    UPrime(7) = -1;  % pit
+    UPrime(11) = -1; % wumpus
+    UPrime(12) = -1; % pit
+else
+    UPrime(6) = 0;
+    UPrime(8) = -1;
+    UPrime(12) = 1;
+end
