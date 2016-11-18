@@ -38,6 +38,11 @@ eta,max_iter)
 % treat these as states
 % state utilities is similar to the board on page 651
 
+% no input exists for board dimensions
+% so we're stating them here as constants
+ROWS = 3;
+COLS = 4;
+
 delta = 0;
 U = zeros(length(S));
 U_trace = U;
@@ -50,6 +55,7 @@ while delta < (eta * ((1 - gamma)/gamma))
         max_a = 0;
         for a = 1:length(A)
             % Sum each state that can be reached
+            probs = CS4300_get_state_probs(s,a,ROWS,COLS);
             % P(s_prime | s,a) * U(s_prime)
         end
         U_prime(state) = R(state) + gamma * max_a;
