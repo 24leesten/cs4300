@@ -22,7 +22,7 @@ EAST  = 4;
 total_failures = 0;
 
 % ///////////////////////////////////////////////////////////////////////////
-% problem 1: base case: 1,1 NORTH
+% problem 1: base case: 1,1
 state = 1;
 action = NORTH;
 
@@ -31,6 +31,20 @@ expected_result = [0.1 0.1 0 0.8 0 0 0 0 0];
 
 if ~all(probs==expected_result)
     disp 'TEST 1 FAILED';
+    disp 'Expected';
+    disp (expected_result);
+    disp 'Actual';
+    disp (probs);
+    total_failures = total_failures + 1;
+end
+
+action = WEST;
+
+probs = CS4300_get_state_probs(state, action, S, ROWS, COLS);
+expected_result = [0.9 0 0 0.1 0 0 0 0 0];
+
+if ~all(probs==expected_result)
+    disp 'TEST 2 FAILED';
     disp 'Expected';
     disp (expected_result);
     disp 'Actual';
@@ -47,7 +61,7 @@ probs = CS4300_get_state_probs(state, action, S, ROWS, COLS);
 expected_result = [0 0 0 .1 0 .1 0 .8 0];
 
 if ~all(probs==expected_result)
-    disp 'TEST 2 FAILED';
+    disp 'TEST 3 FAILED';
     disp 'Expected';
     disp (expected_result);
     disp 'Actual';
@@ -61,7 +75,7 @@ probs = CS4300_get_state_probs(state, action, S, ROWS, COLS);
 expected_result = [0 .1 0 .8 0 0 0 .1 0];
 
 if ~all(probs==expected_result)
-    disp 'TEST 3 FAILED';
+    disp 'TEST 4 FAILED';
     disp 'Expected';
     disp (expected_result);
     disp 'Actual';
@@ -75,7 +89,7 @@ probs = CS4300_get_state_probs(state, action, S, ROWS, COLS);
 expected_result = [0 .8 0 .1 0 .1 0 0 0];
 
 if ~all(probs==expected_result)
-    disp 'TEST 4 FAILED';
+    disp 'TEST 5 FAILED';
     disp 'Expected';
     disp (expected_result);
     disp 'Actual';
@@ -89,7 +103,7 @@ probs = CS4300_get_state_probs(state, action, S, ROWS, COLS);
 expected_result = [0 .1 0 0 0 .8 0 .1 0];
 
 if ~all(probs==expected_result)
-    disp 'TEST 5 FAILED';
+    disp 'TEST 6 FAILED';
     disp 'Expected';
     disp (expected_result);
     disp 'Actual';
@@ -106,7 +120,7 @@ probs = CS4300_get_state_probs(state, action, S, ROWS, COLS);
 expected_result = [0 0 0 0 0 0 .1 .8 .1];
 
 if ~all(probs==expected_result)
-    disp 'TEST 6 FAILED';
+    disp 'TEST 7 FAILED';
     disp 'Expected';
     disp (expected_result);
     disp 'Actual';
@@ -121,7 +135,7 @@ probs = CS4300_get_state_probs(state, action, S, ROWS, COLS);
 expected_result = [.1 0 0 .8 0 0 .1 0 0];
 
 if ~all(probs==expected_result)
-    disp 'TEST 7 FAILED';
+    disp 'TEST 8 FAILED';
     disp 'Expected';
     disp (expected_result);
     disp 'Actual';
@@ -136,7 +150,7 @@ probs = CS4300_get_state_probs(state, action, S, ROWS, COLS);
 expected_result = [.1 .8 .1 0 0 0 0 0 0];
 
 if ~all(probs==expected_result)
-    disp 'TEST 8 FAILED';
+    disp 'TEST 9 FAILED';
     disp 'Expected';
     disp (expected_result);
     disp 'Actual';
@@ -151,7 +165,7 @@ probs = CS4300_get_state_probs(state, action, S, ROWS, COLS);
 expected_result = [0 0 .1 0 0 .8 0 0 .1];
 
 if ~all(probs==expected_result)
-    disp 'TEST 9 FAILED';
+    disp 'TEST 10 FAILED';
     disp 'Expected';
     disp (expected_result);
     disp 'Actual';
