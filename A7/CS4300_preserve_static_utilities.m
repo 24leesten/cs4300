@@ -17,7 +17,7 @@ function UPrime = CS4300_preserve_static_utilities(U)
 
 UPrime = U;
 
-WUMPUS = true;
+WUMPUS = false;
 
 if WUMPUS
     UPrime(16) = 1;  % gold

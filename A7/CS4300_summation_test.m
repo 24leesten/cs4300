@@ -1,5 +1,13 @@
 function CS4300_summation_test()
-
+% CS4300_get_coords_test - runs 4 test scenarios on CS4300_summation based 
+%     on the problems that were demonstrated in class.
+% Call:
+%     CS4300_get_coords_test;
+% Author:
+%     Ryan Keepers
+%     Leland Stenquist
+%     UU
+%     Fall
 
 % Test 1
 state_probs = [0.1 0.1 0 0 0.8 0 0 0 0 0 0 0];
