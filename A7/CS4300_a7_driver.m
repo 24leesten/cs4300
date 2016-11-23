@@ -1,4 +1,4 @@
-function CS4300_a7_driver
+function utility = CS4300_a7_driver(test_r)
 % CS4300_a7_driver - Runs a7 through all assignment specifications.
 % Call:
 %     CS4300_a7_driver;
@@ -9,7 +9,12 @@ function CS4300_a7_driver
 %     Fall 2016
 %
 
-TEST_R = true;
+TEST_R = test_r;
+if TEST_R
+    utility = [];
+else
+    utility = [];
+end
 
 % board setup
 S = [1:16]; % states
@@ -41,6 +46,8 @@ if TEST_R
         R(12) = -1; % pit
         
         [u,utrace] = CS4300_MDP_value_iteration(S,A,P,R,gam,eta,max_iter);
+        utility(ridx).utility = u;
+        utility(ridx).trace = utrace;
         
         disp '========================================';
         disp(sprintf('R = %f',all_R(ridx)));
@@ -53,6 +60,8 @@ else
     for gidx = 1:length(gamma)
         gam = gamma(gidx);
         [u,utrace] = CS4300_MDP_value_iteration(S,A,P,R,gam,eta,max_iter);
+        utility(gidx).utility = u;
+        utility(gidx).trace = utrace;
 
         disp '========================================';
         disp(sprintf('Gamma = %f',gam));
