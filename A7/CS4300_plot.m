@@ -31,11 +31,11 @@ R(6) = 0;
 
 % hyper parameters
 eta = 0.05;
-max_iter = 10000;
+max_iter = 30;
 gamma = [0.9, 0.99, 0.999, 0.9999, 0.99999, 0.999999];
 gam = 0.999999;
 
-all_R = [-0.04];
+all_R = [1];
 
 
 if TEST_R

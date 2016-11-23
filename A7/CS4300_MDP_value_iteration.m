@@ -52,12 +52,14 @@ U = CS4300_preserve_static_utilities(U);
 U_trace = U;
 U_prime = U;
 
+iter = 0;
+
 % do until delta < some stuff (see below)
 while true
     U = U_prime;
     delta = 0;
     for state = 1:length(S)
-        max_a = 0;
+        max_a = -Inf;
         
         for a = 1:length(A)
             % summation performs: SUM[ P(s_prime | s,a) * U(s_prime) ]
@@ -80,6 +82,12 @@ while true
     U_trace = [U_trace; U_prime];
     
     if delta < (eta * ((1 - gamma)/gamma))
+        break;
+    end
+    
+    iter = iter + 1;
+    
+    if iter == max_iter
         break;
     end
 end

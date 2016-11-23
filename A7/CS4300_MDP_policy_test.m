@@ -81,7 +81,7 @@ R(6) = 0;
 [U,Ut] = CS4300_MDP_value_iteration(S,A,P,R,g,e,m);
 policy = CS4300_MDP_policy(S,A,P,U);
 
-m3 = [1 2 2 3 1 1 2 1 4 4 4 1];
+m3 = [1 2 2 3 1 1 2 2 4 4 4 1];
 if policy == m3
   display('==== TEST 3 ====')
   display('PASSED')
@@ -99,14 +99,14 @@ end
 %   test 4  -1.6284 < R(s)
 % vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 R = ones(1,12);
-R = R * -1.6284;
+R = R * -7;
 R(8) = -1;
 R(12) = 1;
 R(6) = 0;
 [U,Ut] = CS4300_MDP_value_iteration(S,A,P,R,g,e,m);
 policy = CS4300_MDP_policy(S,A,P,U);
 
-m4 = [4 4 4 1 1 1 4 1 4 4 4 4];
+m4 = [4 4 4 1 1 4 4 1 4 4 4 4];
 if policy == m4
   display('==== TEST 4 ====')
   display('PASSED')
