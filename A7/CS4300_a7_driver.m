@@ -9,7 +9,7 @@ function CS4300_a7_driver
 %     Fall 2016
 %
 
-TEST_R = false;
+TEST_R = true;
 
 % board setup
 S = [1:16]; % states

@@ -48,6 +48,7 @@ eta,max_iter)
 % so we're stating them here as constants
 
 U = zeros(1,length(S));
+U = CS4300_preserve_static_utilities(U);
 U_trace = U;
 U_prime = U;
 
@@ -66,9 +67,14 @@ while true
             end
         end
         
+        % update u-prime for the given state
         U_prime(state) = R(state) + gamma * max_a;
+        
+        % preserve the non-changing locations of u_prime
         U_prime = CS4300_preserve_static_utilities(U_prime);
-        delta = max(abs(U_prime(state) - U(state)),delta);
+        
+        % delta = |uprime(s) - u(s)| or delta, whichever is larger
+        delta = max( abs(U_prime(state) - U(state)), delta);
         
     end
     U_trace = [U_trace; U_prime];

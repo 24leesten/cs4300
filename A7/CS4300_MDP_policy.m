@@ -17,18 +17,26 @@ function policy = CS4300_MDP_policy(S,A,P,U)
 %     Fall 2016
 %
 
-policy = zeros(1,9);
+policy = zeros(1,length(S));
 
+% for every state
 for s=1:length(S)
-    action = 0;
+    best_action = 0;
     best_val = -Inf;
     
+    % for each action
     for a=1:length(A)
+        
+        % find the sum of all s', utilities for that action
         sum = CS4300_summation(P(s,a).probabilities, U);
+        
+        % update the best action when found 
         if sum > best_val
             best_val = sum;
-            action = a;
+            best_action = a;
         end
     end
-    policy(s) = action;
+    
+    % set the policy for that state to the best action
+    policy(s) = best_action;
 end

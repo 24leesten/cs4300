@@ -22,3 +22,5 @@ for i=1:length(state_probs)
     state_prob = state_probs(i)*U(i);
     summation = summation + state_prob ;
 end
+
+summation = round(summation,3);
