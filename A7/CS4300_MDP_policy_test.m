@@ -13,7 +13,14 @@ function CS4300_MDP_policy_test()
 % MAKE SURE THAT WUMPUS IS SET TO FALSE FOR CS4300_get_P_matrix and
 % CS4300_preserve_static_utilitis
 
-
+R = ones(1,12);
+R = R * -7.0;
+R(8) = -1;
+R(12) = 1;
+R(6) = 0;
+g = 0.9999;
+e = 0.1;
+[U,Ut] = CS4300_MDP_value_iteration(S,A,P,R,g,e,m);
 policy = CS4300_MDP_policy(S,A,P,U);
 
 m1 = [1 2 2 2 1 1 1 1 4 4 4 1];
