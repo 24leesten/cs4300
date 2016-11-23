@@ -23,4 +23,5 @@ for i=1:length(state_probs)
     summation = summation + state_prob ;
 end
 
-summation = round(summation,3);
+% to curb floating point errors.
+summation = round(summation,4);
