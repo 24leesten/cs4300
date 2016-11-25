@@ -39,7 +39,86 @@ function [policy,U,Ut] = CS6380_MDP_policy_iteration(S,A,P,R,k,gamma)
 %     1
 %
 % Author:
-%     Your name
+%     Ryan Keepers
+%     Leland Stenquist
 %     UU
 %     Fall 2016
 %
+
+DEBUG = true;
+RANDOMPOL = true;
+
+U = zeros(1,length(S));
+U = CS4300_preserve_static_utilities(U);
+Ut = U;
+unchanged = true;
+
+if RANDOMPOL
+    policy = randi(4,1,length(S));
+else
+    policy = zeros(1,length(S));
+end
+
+iter = 0;
+if DEBUG
+    disp(sprintf('ITER %d ========================',iter));
+    CS4300_print_matrix(U,3,4);
+    CS4300_print_matrix(policy,3,4);
+    iter = iter + 1;
+end
+
+unchangedcount = 0;
+
+while true
+        
+    % update the utilties
+    U = CS4300_iter_policy_eval(U,S,policy,P,R,gamma);
+    U = CS4300_preserve_static_utilities(U);
+    unchanged = true;
+    
+    for s = 1:length(S)
+        max = -Inf;
+        max_action = 0;
+        for a = 1:length(A)
+            % find the action with the maximum utility
+            action_sum = CS4300_summation(P(s,a).probabilities, U);
+            if action_sum > max
+                max = action_sum;
+                max_action = a;
+            end
+        end
+        if any(policy==0)
+            % On the first iteration, set all policies
+            policy_sum = -Inf;
+        else
+            % otherwise check for new maximum policies
+            policy_sum = CS4300_summation(P(s,policy(s)).probabilities, U);
+        end
+        % set the new policy
+        if max > policy_sum
+            policy(s) = max_action;
+            unchanged = false;
+        end
+        
+    end
+    
+    % u trace
+    Ut = [Ut;U];
+    
+    if DEBUG
+        disp(sprintf('ITER %d ========================',iter));
+        CS4300_print_matrix(U,3,4);
+        CS4300_print_matrix(policy,3,4);
+        iter = iter + 1;
+    end
+    
+    % it's optimal when unchanged
+    if unchanged
+        unchangedcount = unchangedcount + 1;
+        if unchangedcount == 7
+            break;
+        end
+    end
+end
+
+
