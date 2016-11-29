@@ -38,35 +38,6 @@ gam = 0.999999;
 all_R = [1];
 
 
-if TEST_R
-    for ridx = 1:length(all_R)
-        [u,utrace] = CS4300_MDP_value_iteration(S,A,P,R,gam,eta,max_iter);
-        utility(ridx).utility = u;
-        utility(ridx).trace = utrace;
-    end   
-else
-    for gidx = 1:length(gamma)
-        [u,utrace] = CS4300_MDP_value_iteration(S,A,P,R,gam,eta,max_iter);
-        utility(gidx).utility = u;
-        utility(gidx).trace = utrace;
-    end
-end
+[p,u,ut]=CS6380_MDP_policy_iteration(S,A,P,R,30,gam);
 
-
-
-
-for i = 1:length(utility)
-    
-    hold on
-    x = linspace(0,30,length(utility(i).trace));
-    plot(x,utility(i).trace(:,1));
-    plot(x,utility(i).trace(:,4));
-    plot(x,utility(i).trace(:,3));
-    plot(x,utility(i).trace(:,11));
-    plot(x,utility(i).trace(:,12));
-    legend('(1,1)','(4,1)','(3,1)','(3,3)','(4,3)')
-    axis([0 30 -0.3 1.1 ])
-    hold off
-end
-
-CS4300_print_matrix(utility(1).utility,3,4);
+CS4300_print_matrix(u,3,4)
