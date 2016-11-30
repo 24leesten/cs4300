@@ -17,8 +17,7 @@ function Up = CS4300_iter_policy_eval(U,S,Pol,P,R,gamma)
 % linagl version
 
 % create A
-%{
-A = zeros(length(S));
+A = zeros(12);
 for s = 1:length(S)
     if Pol(s) ~= 0
         A(s,:) = P(s, Pol(s)).probabilities;
@@ -28,9 +27,10 @@ end
 Up = (A*U')*gamma + R';
 
 Up = Up';
-%}
 
 % classic version
+
+%{
 for s = 1:length(S)
     
     if sum(Pol) == 0
@@ -47,3 +47,4 @@ for s = 1:length(S)
     % update U
     Up(s) = R(s) + (gamma * summation);
 end
+%}

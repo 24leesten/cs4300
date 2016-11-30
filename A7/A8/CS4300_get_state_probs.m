@@ -14,7 +14,7 @@ function state_probabilities = CS4300_get_state_probs(state, action, rows, cols)
 %     action = 1;
 %     rows = 3;
 %     cols = 4;
-%     state_probs = CS4300_get_state_probs(state,action, S, rows, cols);
+%     [xp,yp] = CS4300_get_state_probs(state,action, S, rows, cols);
 % Author:
 %     Ryan Keepers
 %     Leland Stenquist
@@ -23,13 +23,6 @@ function state_probabilities = CS4300_get_state_probs(state, action, rows, cols)
 %
 
 DEBUG = false;
-
-if (rows*cols) < 13
-    if state == 6 || state == 8 || state == 12
-        state_probabilities = zeros(1,(rows*cols));
-        return;
-    end
-end
 
 % CONSTANTS
 NORTH = 1;

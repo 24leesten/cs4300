@@ -45,9 +45,8 @@ function [policy,U,Ut] = CS6380_MDP_policy_iteration(S,A,P,R,k,gamma)
 %     Fall 2016
 %
 
-DEBUG = false;
+DEBUG = true;
 RANDOMPOL = true;
-MAX_UNCHANGED = 1;
 
 U = zeros(1,length(S));
 U = CS4300_preserve_static_utilities(U);
@@ -103,6 +102,9 @@ while true
         
     end
     
+    % u trace
+    Ut = [Ut;U];
+    
     if DEBUG
         disp(sprintf('ITER %d ========================',iter));
         CS4300_print_matrix(U,3,4);
@@ -110,13 +112,10 @@ while true
         iter = iter + 1;
     end
     
-    % u trace
-    Ut = [Ut;U];
-        
     % it's optimal when unchanged
     if unchanged
         unchangedcount = unchangedcount + 1;
-        if unchangedcount == MAX_UNCHANGED
+        if unchangedcount == 7
             break;
         end
     end

@@ -17,11 +17,7 @@ function UPrime = CS4300_preserve_static_utilities(U)
 
 UPrime = U;
 
-if length(U) < 13
-    WUMPUS = false;
-else
-    WUMPUS = true;
-end
+WUMPUS = false;
 
 if WUMPUS
     UPrime(16) = 1;  % gold

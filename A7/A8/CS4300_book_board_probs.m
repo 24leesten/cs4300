@@ -1,5 +1,5 @@
-function state_probabilities = CS4300_get_state_probs(state, action, rows, cols)
-% CS4300_get_state_probs - take in a state and action and return the
+function state_probabilities = CS4300_book_board_probs(state, action, rows, cols)
+% CS4300_book_board_probs - take in a state and action and return the
 % probability of getting to each neighboring state from there.
 % On input:
 %     state (int): the numeric location on the board 
@@ -14,7 +14,7 @@ function state_probabilities = CS4300_get_state_probs(state, action, rows, cols)
 %     action = 1;
 %     rows = 3;
 %     cols = 4;
-%     state_probs = CS4300_get_state_probs(state,action, S, rows, cols);
+%     [xp,yp] = CS4300_book_board_probs(state,action, S, rows, cols);
 % Author:
 %     Ryan Keepers
 %     Leland Stenquist
@@ -23,13 +23,6 @@ function state_probabilities = CS4300_get_state_probs(state, action, rows, cols)
 %
 
 DEBUG = false;
-
-if (rows*cols) < 13
-    if state == 6 || state == 8 || state == 12
-        state_probabilities = zeros(1,(rows*cols));
-        return;
-    end
-end
 
 % CONSTANTS
 NORTH = 1;
@@ -51,10 +44,10 @@ if DEBUG
     disp (GO_EAST);
 end
 
-CAN_NORTH = (GO_NORTH) <= rows;
-CAN_WEST  = (GO_WEST ) > 0;
-CAN_SOUTH = (GO_SOUTH) > 0;
-CAN_EAST  = (GO_EAST ) <= cols;
+CAN_NORTH = (GO_NORTH) <= rows && state ~= 2;
+CAN_WEST  = (GO_WEST ) > 0 && state ~= 7;
+CAN_SOUTH = (GO_SOUTH) > 0 && state ~= 10;
+CAN_EAST  = (GO_EAST ) <= cols && state ~= 5;
 
 if DEBUG
     disp (CAN_NORTH);
