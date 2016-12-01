@@ -47,7 +47,7 @@ function [policy,U,Ut] = CS6380_MDP_policy_iteration(S,A,P,R,k,gamma)
 
 DEBUG = false;
 RANDOMPOL = true;
-MAX_UNCHANGED = 1;
+MAX_UNCHANGED = 7;
 
 U = zeros(1,length(S));
 U = CS4300_preserve_static_utilities(U);

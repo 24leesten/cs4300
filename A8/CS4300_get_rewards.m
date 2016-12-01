@@ -18,6 +18,10 @@ function R = CS4300_get_rewards(reward, isWumpus)
 
 if isWumpus
     R = zeros(1,16) + reward;
+    R(7) = -1;
+    R(11) = -1;
+    R(12) = -1;
+    R(16) = 1;
 else
     R = zeros(1,12) + reward;
     R(6) = 0;
