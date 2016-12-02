@@ -22,5 +22,6 @@ function success = CS4300_classification_succes(images)
 success = [];
 
 for img = images
+    
     success = [success; (img.cls == img.val)];
 end

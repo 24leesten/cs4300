@@ -12,6 +12,7 @@ function CS4300_a9_driver_asside
 %     UU
 %     Fall 2016
 %
+folds = 5;
 
 GOLD   = 1;
 PIT    = 2;
@@ -26,21 +27,12 @@ LABEL_G = 1;
 LABEL_P = 0;
 LABEL_W = 0;
 
-for i=1:length(G)
-    G(i).lbl = LABEL_G;
-    P(i).lbl = LABEL_P;
-    W(i).lbl = LABEL_W;
-end
+[gold_weights, predictions] = CS4300_run_k_folds(G,P,W,LABEL_G,LABEL_P,LABEL_W,folds);
 
-all_imgs = [G P W];
-
-shuffled = CS4300_fisher_yates(all_imgs);
-
-gold_weight = CS4300_perceptron(shuffled, 0.1);
-
-%disp(gold_weight);
-
-
+gold_weight = get_best_weight(gold_weights, predictions);
+% gold
+cls_imgs = CS4300_classify(G,P,W,1,0,LABEL_W,gold_weight, GOLD);
+disp(mean(CS4300_classification_succes(cls_imgs)));
 
 %%%%%%%%%%%%%%
 % Classify P %
@@ -49,19 +41,12 @@ LABEL_G = 0;
 LABEL_P = 1;
 LABEL_W = 0;
 
-for i=1:length(G)
-    G(i).lbl = LABEL_G;
-    P(i).lbl = LABEL_P;
-    W(i).lbl = LABEL_W;
-end
+[pit_weights, predictions] = CS4300_run_k_folds(G,P,W,LABEL_G,LABEL_P,LABEL_W,folds);
 
-all_imgs = [G P W];
-
-shuffled = CS4300_fisher_yates(all_imgs);
-
-pit_weight = CS4300_perceptron(shuffled, 0.1);
-
-%disp(pit_weight);
+pit_weight = get_best_weight(pit_weights, predictions);
+% pits
+cls_imgs = CS4300_classify(G,P,W,LABEL_G,LABEL_P,LABEL_W,pit_weight, PIT);
+disp(mean(CS4300_classification_succes(cls_imgs)));
 
 %%%%%%%%%%%%%%
 % Classify W %
@@ -70,25 +55,24 @@ LABEL_G = 0;
 LABEL_P = 0;
 LABEL_W = 1;
 
-for i=1:length(G)
-    G(i).lbl = LABEL_G;
-    P(i).lbl = LABEL_P;
-    W(i).lbl = LABEL_W;
+[wumpus_weights, predictions] = CS4300_run_k_folds(G,P,W,LABEL_G,LABEL_P,LABEL_W,folds);
+
+wumpus_weight = get_best_weight(wumpus_weights, predictions);
+% wumpus
+cls_imgs = CS4300_classify(G,P,W,LABEL_G,LABEL_P,LABEL_W,wumpus_weight, WUMPUS);
+disp(mean(CS4300_classification_succes(cls_imgs)));
+
+
+
+
+
+function best_weight = get_best_weight(weights, predictions)
+
+max = 0;
+best_weight = [];
+for i = 1:length(weights)
+    if mean(predictions(i).p) > max 
+        max = mean(predictions(i).p);
+        best_weight = weights(i).w;
+    end
 end
-
-all_imgs = [G P W];
-
-shuffled = CS4300_fisher_yates(all_imgs);
-
-wumpus_weight = CS4300_perceptron(shuffled, 0.1);
-
-%disp(wumpus_weight);
-
-all_imgs = [G P W];
-shuffled = CS4300_fisher_yates(all_imgs);
-
-all_imgs = CS4300_classify(shuffled,gold_weight, GOLD);
-all_imgs = CS4300_classify(shuffled,weight, PIT);
-all_imgs = CS4300_classify(shuffled,weight, WUMPUS);
-
-success = CS4300_perceptron_prediction(all_imgs);

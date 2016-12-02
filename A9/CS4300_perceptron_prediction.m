@@ -1,4 +1,3 @@
-
 function success = CS4300_perceptron_prediction(images,w)
 % CS4300_perceptron_prediction - algorithm for applying the weight vector
 % On input:
