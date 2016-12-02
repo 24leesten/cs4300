@@ -12,8 +12,11 @@ function [weights,predictions] = CS4300_run_k_folds(G,P,W,glab,plab,wlab,k)
 %     wlab (int): {0,1} label for W images
 %     k (int): number of folds
 % On output:
-%     weights (struct vector): array containing weight arays
-%       folds.fold (vector): a partition of the original array
+%     weights (struct vector): array containing weight vectors
+%       weights(n).w (vector): the weight vector of the nth fold
+%     predictions (struct vector): array containing predictions
+%       predictions(n).p (vector): the prediction results of testing on the
+%       nth fold
 % Call:
 %     [G, P, W] = CS4300_load_images;
 %     [w,p] = CS4300_run_k_folds(G,P,W,1,0,0,5);
