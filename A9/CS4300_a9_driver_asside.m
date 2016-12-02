@@ -34,13 +34,11 @@ end
 
 all_imgs = [G P W];
 
-all_imgs(1).im
-shuffled = CS4300_fisher_yates(all_imgs)
-shuffled(1).im
+shuffled = CS4300_fisher_yates(all_imgs);
 
 gold_weight = CS4300_perceptron(shuffled, 0.1);
 
-disp(gold_weight);
+%disp(gold_weight);
 
 
 
@@ -63,14 +61,14 @@ shuffled = CS4300_fisher_yates(all_imgs);
 
 pit_weight = CS4300_perceptron(shuffled, 0.1);
 
-disp(pit_weight);
+%disp(pit_weight);
 
 %%%%%%%%%%%%%%
 % Classify W %
 %%%%%%%%%%%%%%
 LABEL_G = 0;
-LABEL_P = 1;
-LABEL_W = 0;
+LABEL_P = 0;
+LABEL_W = 1;
 
 for i=1:length(G)
     G(i).lbl = LABEL_G;
@@ -84,11 +82,13 @@ shuffled = CS4300_fisher_yates(all_imgs);
 
 wumpus_weight = CS4300_perceptron(shuffled, 0.1);
 
-disp(wumpus_weight);
+%disp(wumpus_weight);
 
+all_imgs = [G P W];
+shuffled = CS4300_fisher_yates(all_imgs);
 
-all_imgs = CS4300_classify(all_imgs,gold_weight, GOLD);
-all_imgs = CS4300_classify(all_imgs,weight, PIT);
-all_imgs = CS4300_classify(all_imgs,weight, WUMPUS);
+all_imgs = CS4300_classify(shuffled,gold_weight, GOLD);
+all_imgs = CS4300_classify(shuffled,weight, PIT);
+all_imgs = CS4300_classify(shuffled,weight, WUMPUS);
 
 success = CS4300_perceptron_prediction(all_imgs);

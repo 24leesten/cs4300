@@ -17,9 +17,10 @@ function [g_imgs, p_imgs, w_imgs] = CS4300_load_images
 %     Fall 2016
 %
 
+UNCLASSIFIED = -1;
 GOLD   = 1;
 PIT    = 2;
-WUMPUS = 3
+WUMPUS = 3;
 
 g_imgs = [];
 p_imgs = [];
@@ -30,20 +31,22 @@ for letter = ['g','p','w']
         img_raw = imread(strcat('images/',num2str(letter),num2str(num),'.jpg'));
         img_binary = img_raw > 150;
         img = imresize(img_binary,[15,15]);
-        
         switch (letter)
             case 'g'
-                g_imgs(length(g_imgs)+1).im = img;
-                g_imgs(length(g_imgs)+1).cls = -1;
-                g_imgs(length(g_imgs)+1).val = GOLD;
+                index = length(g_imgs)+1;
+                g_imgs(index).im  = img;
+                g_imgs(index).cls = UNCLASSIFIED;
+                g_imgs(index).val = GOLD;
             case 'p'
-                p_imgs(length(p_imgs)+1).im = img;
-                p_imgs(length(p_imgs)+1).cls = -1;
-                p_imgs(length(p_imgs)+1).val = PIT;
+                index = length(p_imgs)+1;
+                p_imgs(index).im  = img;
+                p_imgs(index).cls = UNCLASSIFIED;
+                p_imgs(index).val = PIT;
             case 'w'
-                w_imgs(length(w_imgs)+1).im = img;
-                w_imgs(length(w_imgs)+1).cls = -1;
-                w_imgs(length(w_imgs)+1).val = WUMPUS;
+                index = length(w_imgs)+1;
+                w_imgs(index).im  = img;
+                w_imgs(index).cls = UNCLASSIFIED;
+                w_imgs(index).val = WUMPUS;
         end
     end
 end
