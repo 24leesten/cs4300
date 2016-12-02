@@ -13,3 +13,16 @@ function CS4300_a9_driver
 %     Fall 2016
 %
 
+LABEL_G = 1;
+LABEL_P = 0;
+LABEL_W = 0;
+
+[G, P, W] = CS4300_load_images;
+
+for i=1:length(G)
+    G(i).lbl = LABEL_G;
+    P(i).lbl = LABEL_P;
+    W(i).lbl = LABEL_W;
+end
+
+CS4300_perceptron(G);
