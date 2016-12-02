@@ -2,10 +2,11 @@ function w = CS4300_perceptron(images,alpha)
 % CS4300_perceptron - perceptron algorithm
 % On input:
 %     images (struct vector): array of images
-%       images(n).im = the nth image.
+%       images(n).im = mxm matrix: the nth image
+%       images(n).lbl = the lable of the nth image
 %     r (float): rate
 % On output:
-%     no_output (int): Doesn't actually put out
+%     w (float vector): the perceptron linear separator
 % Call:
 %     CS4300_perceptron;
 % Author:

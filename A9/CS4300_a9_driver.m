@@ -13,9 +13,9 @@ function CS4300_a9_driver
 %     Fall 2016
 %
 
-LABEL_G = 1;
+LABEL_G = 0;
 LABEL_P = 0;
-LABEL_W = 0;
+LABEL_W = 1;
 
 [G, P, W] = CS4300_load_images;
 
@@ -25,4 +25,14 @@ for i=1:length(G)
     W(i).lbl = LABEL_W;
 end
 
-CS4300_perceptron(G);
+all_imgs = [G P W];
+
+shuffled = CS4300_fisher_yates(all_imgs);
+
+weight = CS4300_perceptron(shuffled, 0.1);
+
+disp(weight);
+
+success = CS4300_perceptron_prediction(all_imgs,weight);
+
+disp(mean(success));
