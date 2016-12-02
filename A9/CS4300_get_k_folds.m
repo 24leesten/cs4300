@@ -16,7 +16,7 @@ function folds = CS4300_get_k_folds(arr, k)
 %
 
 count = length(arr);
-kcount = floor(count/k);
+kcount = ceil(count/k);
 
 % first shuffle the data
 shuffled = arr; %CS4300_fisher_yates(arr);
@@ -24,30 +24,20 @@ shuffled = arr; %CS4300_fisher_yates(arr);
 folds = [];
 
 % then split the data into k folds
-for i = 1:kcount
-    breakEarly = false;
+for i = 1:k
     this_fold = [];
     index = 0;
     
     % create the fold
-    for j = 1:k
-        index = ((i-1)*k) + j;
+    for j = 1:kcount
+        index = ((i-1)*kcount) + j;
+        if (index > count)
+            break;
+        end
         this_fold = [this_fold shuffled(index)];
-    end
-    
-    % if not enough elements exist on the tail to make a full fold
-    % append them to the current fold
-    if (count-index) < k
-        this_fold = [this_fold shuffled(index+1:end)];
-        breakEarly = true;
-    end
+        end
     
     % append this fold to the folds index
     folds(i).fold = this_fold;
-    
-    % might need to break the loop early
-    if breakEarly
-        break;
-    end
 end
 
