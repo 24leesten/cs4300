@@ -1,11 +1,11 @@
-
-function success = CS4300_perceptron_prediction(images,w)
+function success = CS4300_classification_succes(images)
 % CS4300_perceptron_prediction - algorithm for applying the weight vector
 % On input:
 %     images (struct vector): array of images
 %       images(n).im = mxm matrix: the nth image
 %       images(n).lbl = the lable of the nth image
 %     w (float vector): weight vector for predicting the image
+%     state: the state we are predicting
 % On output:
 %     success (int vector): prediction results
 %       1 = successful prediction
@@ -19,21 +19,10 @@ function success = CS4300_perceptron_prediction(images,w)
 %     Fall 2016
 %
 
-[imx,imy] = size(images(1).im);
-imSize = imx*imy;
-
 success = [];
 
 for img = images
-    x = reshape(img.im,imSize,1);
-    y = img.lbl;
-    
-    prediction = threshold(dot(w,x));
-    
-    disp(sprintf('y: %d prediction: %d', y, prediction));
-    success = [success; (prediction == y)];
+    if img.cls == img.val
+        success = [success; (prediction == y)];
+    end
 end
-
-
-function val = threshold(number)
-    val = number >= 0;

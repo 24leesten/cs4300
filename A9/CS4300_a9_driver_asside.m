@@ -1,4 +1,4 @@
-function CS4300_a9_driver
+function CS4300_a9_driver_asside
 % CS4300_a9_driver - drives a9
 % On input:
 %     not_used (int): I don't actually use this
@@ -92,8 +92,3 @@ all_imgs = CS4300_classify(all_imgs,weight, PIT);
 all_imgs = CS4300_classify(all_imgs,weight, WUMPUS);
 
 success = CS4300_perceptron_prediction(all_imgs);
-
-
-
-
-

@@ -35,4 +35,3 @@ end
 
 function val = threshold(number)
     val = number >= 0;
-

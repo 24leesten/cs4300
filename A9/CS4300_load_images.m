@@ -17,6 +17,10 @@ function [g_imgs, p_imgs, w_imgs] = CS4300_load_images
 %     Fall 2016
 %
 
+GOLD   = 1;
+PIT    = 2;
+WUMPUS = 3
+
 g_imgs = [];
 p_imgs = [];
 w_imgs = [];
@@ -30,10 +34,16 @@ for letter = ['g','p','w']
         switch (letter)
             case 'g'
                 g_imgs(length(g_imgs)+1).im = img;
+                g_imgs(length(g_imgs)+1).cls = -1;
+                g_imgs(length(g_imgs)+1).val = GOLD;
             case 'p'
                 p_imgs(length(p_imgs)+1).im = img;
+                p_imgs(length(p_imgs)+1).cls = -1;
+                p_imgs(length(p_imgs)+1).val = PIT;
             case 'w'
                 w_imgs(length(w_imgs)+1).im = img;
+                w_imgs(length(w_imgs)+1).cls = -1;
+                w_imgs(length(w_imgs)+1).val = WUMPUS;
         end
     end
 end
