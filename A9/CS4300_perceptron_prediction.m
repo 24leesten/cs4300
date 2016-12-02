@@ -19,6 +19,8 @@ function success = CS4300_perceptron_prediction(images,w)
 %     Fall 2016
 %
 
+DEBUG = false;
+
 [imx,imy] = size(images(1).im);
 imSize = imx*imy;
 
@@ -30,7 +32,9 @@ for img = images
     
     prediction = threshold(dot(w,x));
     
-    disp(sprintf('y: %d prediction: %d', y, prediction));
+    if DEBUG
+        disp(sprintf('y: %d prediction: %d', y, prediction));
+    end
     success = [success; (prediction == y)];
 end
 
