@@ -41,7 +41,7 @@ for img = images
     prediction = threshold(dot(g_weights,x));
     if (prediction == 1)
         img.cls = GOLD;
-        cls_images = [cls_images img];
+        cls_images[cls_images img];
     end
 end
 
@@ -62,7 +62,6 @@ for img = images
     prediction = threshold(dot(p_weights,x));
     if prediction == 1 && img.cls == -1
         img.cls = PIT;
-        cls_images = [cls_images img];
     end
 end
 
@@ -73,7 +72,6 @@ for img = images
     prediction = threshold(dot(w_weights,x));
     if prediction == 1 && img.cls == -1
         img.cls = WUMPUS;
-        cls_images = [cls_images img];
     end
 end
 
