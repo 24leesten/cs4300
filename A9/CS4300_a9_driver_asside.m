@@ -55,6 +55,8 @@ wumpus_weight = get_best_weight(wumpus_weights, predictions);
 
 % wumpus
 cls_imgs = CS4300_classify(gold_weight, pit_weight, wumpus_weight, [G P W]);
+
+disp('All images classified together.')
 disp(mean(CS4300_classification_succes(cls_imgs)));
 
 
