@@ -5,7 +5,7 @@ function randomized_arr = CS4300_fisher_yates(arr)
 % On output:
 %     randomized_arr (vector): shuffled array
 % Call:
-%     CS4300_fisher_yates;
+%     CS4300_fisher_yates(arr);
 % Author:
 %     Ryan Keepers
 %     Leland Stenquist

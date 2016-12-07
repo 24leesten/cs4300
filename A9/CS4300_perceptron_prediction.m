@@ -4,6 +4,8 @@ function success = CS4300_perceptron_prediction(images,w)
 %     images (struct vector): array of images
 %       images(n).im = mxm matrix: the nth image
 %       images(n).lbl = the lable of the nth image
+%       images(n).cls = -1 if unclassified else 1, 2, or 3
+%       images(n).val = the actual val of the image 1, 2, 0r 3
 %     w (float vector): weight vector for predicting the image
 % On output:
 %     success (int vector): prediction results

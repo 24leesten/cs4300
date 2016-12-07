@@ -7,7 +7,7 @@ function folds = CS4300_get_k_folds(arr, k)
 %     folds (struct vector): array containing a fold array
 %       folds.fold (vector): a partition of the original array
 % Call:
-%     CS4300_get_k_folds;
+%     CS4300_get_k_folds(arr, k);
 % Author:
 %     Ryan Keepers
 %     Leland Stenquist

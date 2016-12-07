@@ -1,23 +1,19 @@
 function cls_images = CS4300_classify(g_weights, p_weights, w_weights, images)
-% CS4300_classify - algorithm for applying the weight vector
+% CS4300_classify - make predictions based on the wieghts calculated for
+%     each image type
 % On input:
-%     G (struct vector): array of images
-%       G(n).im = mxm matrix: the nth image
-%     P (struct vector): array of images
-%       P(n).im = mxm matrix: the nth image
-%     W (struct vector): array of images
-%       W(n).im = mxm matrix: the nth image
-%     glab (int): {0,1} label for G images
-%     plab (int): {0,1} label for P images
-%     wlab (int): {0,1} label for W images
-%     w (float vector): weight vector for predicting the image
-%     classification(int): indicates PIT, GOLD, or WUMPUS
+%     g_weights (float vector): gold weights
+%     p_weights (float vector): pit eights
+%     w_weights (float vector): wumpus weights
+%     images (struct vector): array of images
+%       images(n).im = mxm matrix: the nth image
+%       images(n).lbl = the lable of the nth image
+%       images(n).cls = -1 if unclassified else 1, 2, or 3
+%       images(n).val = the actual val of the image 1, 2, 0r 3
 % On output:
 %     cls_images (struct vector): array of images which were predicted to
-%     match the classification input.
-%       cls_images(n).im = mxm matrix: the nth image
 % Call:
-%     CS4300_classify(images,w,WUMPUS);
+%     CS4300_classify(g_weights, p_weights, w_weights, images);
 % Author:
 %     Ryan Keepers
 %     Leland Stenquist
@@ -45,15 +41,6 @@ for img = images
     end
 end
 
-%predict gold
-for img = images
-    x = reshape(img.im,imSize,1);
-    
-    prediction = threshold(dot(g_weights,x));
-    if prediction == 1
-        img.cls = GOLD;
-    end
-end
 
 %predict pit
 for img = images
