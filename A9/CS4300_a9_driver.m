@@ -13,12 +13,29 @@ function CS4300_a9_driver
 %     Fall 2016
 %
 
+alpha = 0.1;
+max_iter = 100000;
+rate = 1;
+
 LABEL_G = 1;
-LABEL_P = 0;
-LABEL_W = 0;
+LABEL_P = 2;
+LABEL_W = 3;
 
 [G, P, W] = CS4300_load_images;
 
-K = 5;
+[x,y] = CS4300_format_data(G,P,W,LABEL_G);
+[w,hist] = CS4300_perceptron_learning(x,y,alpha,max_iter,rate);
 
-[weights, predictions] = CS4300_run_k_folds(G,P,W,LABEL_G,LABEL_P,LABEL_W,5);
+[h,w] = size(hist);
+for idx = 1:h
+    disp(hist(idx,1));
+end
+
+%{
+[x,y] = CS4300_format_data(G,P,W,LABEL_P);
+[w,hist] = CS4300_perceptron_learning(x,y,alpha,max_iter,rate);
+
+
+[x,y] = CS4300_format_data(G,P,W,LABEL_W);
+[w,hist] = CS4300_perceptron_learning(x,y,alpha,max_iter,rate);
+%}
