@@ -34,19 +34,16 @@ y = [];
 
 [x,y] = getFeatures(LABEL_G, FEATURE_TYPE, G, P, W);
 [w,hist] = CS4300_perceptron_learning(x,y,alpha,max_iter,rate);
+printPretty('G',hist);
 
-[h,w] = size(hist);
-for idx = 1:h
-    disp(hist(idx,1));
-end
-
-%{
-[x,y] = CS4300_format_data(G,P,W,LABEL_P);
+[x,y] = getFeatures(LABEL_P, FEATURE_TYPE, G, P, W);
 [w,hist] = CS4300_perceptron_learning(x,y,alpha,max_iter,rate);
+printPretty('P',hist);
 
-[x,y] = CS4300_format_data(G,P,W,LABEL_W);
+[x,y] = getFeatures(LABEL_W, FEATURE_TYPE, G, P, W);
 [w,hist] = CS4300_perceptron_learning(x,y,alpha,max_iter,rate);
-%}
+printPretty('W',hist);
+
 
 function [x,y] = getFeatures(label, feature, G, P, W)
 IMG = 1;
@@ -57,4 +54,11 @@ elseif feature == EUL
     [x,y] = CS4300_euler_format(G,P,W,label);
 else
     return;
+end
+
+function printPretty (title, hist)
+disp(title);
+[h,w] = size(hist);
+for idx = 1:h
+    disp(hist(idx,1));
 end
