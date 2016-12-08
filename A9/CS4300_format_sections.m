@@ -1,5 +1,5 @@
-function [x, y] = CS4300_euler_format(G,P,W,which)
-% CS4300_format_data: turns images into data, label datasets with bweuler
+function [x, y] = CS4300_format_sections(G,P,W,which)
+% CS4300_format_sections: turns images into data, label datasets
 % On input:
 %     g_imgs (struct vector): contains n images
 %       g_imgs(n).im = the nth image
@@ -14,13 +14,14 @@ function [x, y] = CS4300_euler_format(G,P,W,which)
 % Call:
 %     [G,P,W] = CS4300_load_images;
 %     which = 1;
-%     [X,y] = CS4300_euler_format(G,P,W,which);
+%     [X,y] = CS4300_format_sections(G,P,W,which);
 % Author:
 %     Ryan Keepers
 %     Leland Stenquist
 %     UU
 %     Fall 2016
 %
+
 
 [imx,imy] = size(G(1).im);
 imSize = imx*imy;
@@ -31,8 +32,12 @@ y = [];
 for g = G
     img = g.im;
     img = img > 150;
-    eul = bweuler(img,4);
-    x = [x; eul];
+    img = imresize(img,[15,15]);
+    r1 = img(4,:);
+    r2 = img(8,:);
+    r3 = img(12,:);
+    concat = [r1 r2 r3];
+    x = [x; concat];
     if which == 1
         y = [y; 1];
     else
@@ -43,8 +48,12 @@ end
 for p = P
     img = p.im;
     img = img > 150;
-    eul = bweuler(img,4);
-    x = [x; eul];
+    img = imresize(img,[15,15]);
+    r1 = img(4,:);
+    r2 = img(8,:);
+    r3 = img(12,:);
+    concat = [r1 r2 r3];
+    x = [x; concat];
     if which == 2
         y = [y; 1];
     else
@@ -55,11 +64,19 @@ end
 for w = W
     img = w.im;
     img = img > 150;
-    eul = bweuler(img,4);
-    x = [x; eul];
+    img = imresize(img,[15,15]);
+    r1 = img(4,:);
+    r2 = img(8,:);
+    r3 = img(12,:);
+    concat = [r1 r2 r3];
+    x = [x; concat];
     if which == 3
         y = [y; 1];
     else
         y = [y; 0];
     end
 end
+
+function val=count_arr(arr,find)
+val = arr == find;
+val = sum(sum(val));

@@ -1,11 +1,11 @@
-function CS4300_a9_driver_asside
-% CS4300_a9_driver - drives a9 asside
+function CS4300_a9_driver_cross_validation
+% CS4300_a9_driver_cross_validation - drives a9
 % On input:
 %     not_used (int): I don't actually use this
 % On output:
 %     no_output (int): Doesn't actually put out
 % Call:
-%     CS4300_a9_driver_asside;
+%     CS4300_a9_driver_cross_validation;
 % Author:
 %     Ryan Keepers
 %     Leland Stenquist
@@ -14,7 +14,7 @@ function CS4300_a9_driver_asside
 %
 folds = 27;
 
-[G, P, W] = CS4300_load_images;
+[G, P, W] = CS4300_load_images(true);
 
 %%%%%%%%%%%%%%
 % Classify G %

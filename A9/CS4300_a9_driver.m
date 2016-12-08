@@ -23,13 +23,13 @@ LABEL_W = 3;
 
 IMG = 1;
 EUL = 2;
-AREA = 3;
+AVG = 3;
 
-FEATURE_TYPE = EUL;
+FEATURE_TYPE = AVG;
 x = [];
 y = [];
 
-[G, P, W] = CS4300_load_images;
+[G, P, W] = CS4300_load_images(false);
 
 
 [x,y] = getFeatures(LABEL_G, FEATURE_TYPE, G, P, W);
@@ -44,7 +44,6 @@ printPretty('P',hist);
 [w,hist] = CS4300_perceptron_learning(x,y,alpha,max_iter,rate);
 printPretty('W',hist);
 
-
 function [x,y] = getFeatures(label, feature, G, P, W)
 IMG = 1;
 EUL = 2;
@@ -53,7 +52,7 @@ if feature == IMG
 elseif feature == EUL
     [x,y] = CS4300_euler_format(G,P,W,label);
 else
-    return;
+    [x,y] = CS4300_format_sections(G,P,W,label);
 end
 
 function printPretty (title, hist)
@@ -62,3 +61,4 @@ disp(title);
 for idx = 1:h
     disp(hist(idx,1));
 end
+

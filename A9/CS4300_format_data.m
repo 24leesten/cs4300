@@ -31,6 +31,8 @@ y = [];
 
 for g = G
     img = g.im;
+    img = img > 150;
+    img = imresize(img,[15,15]);
     img = reshape(img, imSize,1);
     x = [x; img'];
     if which == 1
@@ -42,6 +44,8 @@ end
 
 for p = P
     img = p.im;
+    img = img > 150;
+    img = imresize(img,[15,15]);
     img = reshape(img, imSize,1);
     x = [x; img'];
     if which == 2
@@ -53,6 +57,8 @@ end
 
 for w = W
     img = w.im;
+    img = img > 150;
+    img = imresize(img,[15,15]);
     img = reshape(img, imSize,1);
     x = [x; img'];
     if which == 3
