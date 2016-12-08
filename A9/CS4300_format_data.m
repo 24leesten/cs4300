@@ -61,3 +61,7 @@ for w = W
         y = [y; 0];
     end
 end
+
+function val=count_arr(arr,find)
+val = arr == find;
+val = sum(sum(val));
