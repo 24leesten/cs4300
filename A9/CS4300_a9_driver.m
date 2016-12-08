@@ -21,9 +21,18 @@ LABEL_G = 1;
 LABEL_P = 2;
 LABEL_W = 3;
 
+IMG = 1;
+EUL = 2;
+AREA = 3;
+
+FEATURE_TYPE = EUL;
+x = [];
+y = [];
+
 [G, P, W] = CS4300_load_images;
 
-[x,y] = CS4300_format_data(G,P,W,LABEL_G);
+
+[x,y] = getFeatures(LABEL_G, FEATURE_TYPE, G, P, W);
 [w,hist] = CS4300_perceptron_learning(x,y,alpha,max_iter,rate);
 
 [h,w] = size(hist);
@@ -35,7 +44,17 @@ end
 [x,y] = CS4300_format_data(G,P,W,LABEL_P);
 [w,hist] = CS4300_perceptron_learning(x,y,alpha,max_iter,rate);
 
-
 [x,y] = CS4300_format_data(G,P,W,LABEL_W);
 [w,hist] = CS4300_perceptron_learning(x,y,alpha,max_iter,rate);
 %}
+
+function [x,y] = getFeatures(label, feature, G, P, W)
+IMG = 1;
+EUL = 2;
+if feature == IMG
+    [x,y] = CS4300_format_data(G,P,W,label);
+elseif feature == EUL
+    [x,y] = CS4300_euler_format(G,P,W,label);
+else
+    return;
+end

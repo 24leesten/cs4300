@@ -18,7 +18,7 @@ function [w, per_cor] = CS4300_perceptron_learning(X, y, alpha, max_iter, rate)
 %     UU
 %     Fall 2016
 %
-bias = 0;
+bias = 1;
 
 [row, col] = size(X);
 w = zeros(1,col);

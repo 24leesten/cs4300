@@ -12,7 +12,7 @@ function CS4300_a9_driver_asside
 %     UU
 %     Fall 2016
 %
-folds = 5;
+folds = 27;
 
 [G, P, W] = CS4300_load_images;
 
