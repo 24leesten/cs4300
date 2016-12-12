@@ -1,4 +1,4 @@
-function [avg, st] = CS4300_a9_stats_driver
+function CS4300_a9_stats_driver
 % CS4300_a9_driver - drives a9
 % On input:
 %     not_used (int): I don't actually use this
@@ -13,6 +13,23 @@ function [avg, st] = CS4300_a9_stats_driver
 %     Fall 2016
 %
 
+IMG = 1;
+EUL = 2;
+AVG = 3;
+
+FEATURE_TYPE = IMG;
+
+vals = [1 2 4 8 16];
+means = [];
+std_d = [];
+for val=vals
+    accuracy = CS4300_get_stats(FEATURE_TYPE);
+    means = [means mean(accuracy)];
+    std_d = [std_d std(accuracy)];
+end
+
+function accuracy = CS4300_get_stats(FEATURE_TYPE)
+
 alpha = 0.1;
 max_iter = 2;
 rate = 1;
@@ -21,18 +38,12 @@ LABEL_G = 1;
 LABEL_P = 2;
 LABEL_W = 3;
 
-IMG = 1;
-EUL = 2;
-AVG = 3;
-
-FEATURE_TYPE = IMG;
 x = [];
 y = [];
 
 [G, P, W] = CS4300_load_images(false);
 
 avg = [];
-st = [];
 
 for i=1:100
 
@@ -49,8 +60,7 @@ for i=1:100
     %printPretty('W',hist);
 
     success = CS4300_test_success(g_weights, p_weights, w_weights, G, P, W, FEATURE_TYPE);
-    avg = [avg mean(success)];
-    st = [st std(success)];
+    accuracy = [avg mean(success)];
     
 end
 

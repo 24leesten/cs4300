@@ -13,6 +13,22 @@ function CS4300_a9_stats_driver
 %     Fall 2016
 %
 
+IMG = 1;
+EUL = 2;
+AVG = 3;
+
+FEATURE_TYPE = IMG;
+
+vals = [1 2 4 8 16]
+x = []
+means = []
+std = []
+for val=vals
+    accuracy = CS4300_get_stats(FEATURE_TYPE);
+end
+
+function accuracy = CS4300_get_stats(FEATURE_TYPE)
+
 alpha = 0.1;
 max_iter = 2;
 rate = 1;
@@ -21,17 +37,12 @@ LABEL_G = 1;
 LABEL_P = 2;
 LABEL_W = 3;
 
-IMG = 1;
-EUL = 2;
-AVG = 3;
-
-FEATURE_TYPE = IMG;
 x = [];
 y = [];
 
 [G, P, W] = CS4300_load_images(false);
 
-rate = []
+avg = [];
 
 for i=1:100
 
@@ -48,10 +59,8 @@ for i=1:100
     %printPretty('W',hist);
 
     success = CS4300_test_success(g_weights, p_weights, w_weights, G, P, W, FEATURE_TYPE);
-    success.mean = mean(success);
-    success.str = std(success)
-    rate = [rate success];
-
+    accuracy = [avg mean(success)];
+    
 end
 
 function [x,y] = getFeatures(label, feature, G, P, W)
