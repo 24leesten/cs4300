@@ -19,14 +19,34 @@ AVG = 3;
 
 FEATURE_TYPE = IMG;
 
-vals = [1 2 4 8 16];
+trials = [1 2 4 8 16];
 means = [];
 std_d = [];
-for val=vals
+ci = [];
+for val=trials
     accuracy = CS4300_get_stats(FEATURE_TYPE);
     means = [means mean(accuracy)];
     std_d = [std_d std(accuracy)];
+    
+    SEM = std(accuracy)/sqrt(length(accuracy));        % Standard Error
+    ts = tinv([0.025  0.975],length(accuracy)-1);      % T-Score
+    CI = mean(accuracy) + ts*SEM;                      % Confidence Intervals
+    ci = [ci CI];
 end
+
+disp('trials')
+disp(trials)
+disp('mean')
+disp(means)
+disp('Standard Deviation')
+disp(std_d)
+disp('Confidence Intervla')
+disp(ci)
+
+
+
+
+
 
 function accuracy = CS4300_get_stats(FEATURE_TYPE)
 
