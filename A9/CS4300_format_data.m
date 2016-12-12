@@ -33,7 +33,7 @@ for g = G
     img = g.im;
     img = img > 150;
     img = imresize(img,[15,15]);
-    img = reshape(img, imSize,1);
+    img = reshape(img, 15*15,1);
     x = [x; img'];
     if which == 1
         y = [y; 1];
@@ -46,7 +46,7 @@ for p = P
     img = p.im;
     img = img > 150;
     img = imresize(img,[15,15]);
-    img = reshape(img, imSize,1);
+    img = reshape(img, 15*15,1);
     x = [x; img'];
     if which == 2
         y = [y; 1];
@@ -59,7 +59,7 @@ for w = W
     img = w.im;
     img = img > 150;
     img = imresize(img,[15,15]);
-    img = reshape(img, imSize,1);
+    img = reshape(img, 15*15,1);
     x = [x; img'];
     if which == 3
         y = [y; 1];
