@@ -1,5 +1,5 @@
 function success = CS4300_perceptron_test(w,X,y)
-% CS4300_perceptron_prediction - algorithm for applying the weight vector
+% CS4300_perceptron_test - algorithm for applying the weight vector
 % On input:
 %     w (float vector): weight vector for predicting the image
 %     X (nxm array): n independent variable samples each of length m

@@ -1,6 +1,6 @@
-function success = CS4300_test_succes(g_weights, p_weights, w_weights, G, P, W, feature)
-% CS4300_classify - make predictions based on the wieghts calculated for
-%     each image type
+function success = CS4300_test_success(g_weights, p_weights, w_weights, G, P, W, feature)
+% CS4300_test_success - gathers the success based on the wieghts and the
+%     images
 % On input:
 %     g_weights (float vector): gold weights
 %     p_weights (float vector): pit eights
@@ -13,7 +13,7 @@ function success = CS4300_test_succes(g_weights, p_weights, w_weights, G, P, W, 
 % On output:
 %     cls_images (struct vector): array of images which were predicted to
 % Call:
-%     CS4300_classify(g_weights, p_weights, w_weights, images);
+%     CS4300_test_success(g_weights, p_weights, w_weights, G, P, W, feature);
 % Author:
 %     Ryan Keepers
 %     Leland Stenquist
