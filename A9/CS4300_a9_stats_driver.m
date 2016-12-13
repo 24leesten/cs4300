@@ -23,6 +23,8 @@ trials = [1 2 4 8 16 32];
 means = [];
 std_d = [];
 conf_i = [];
+y_neg = [];
+y_pos = [];
 for trial=trials
     accuracy = CS4300_get_stats(FEATURE_TYPE, trial);
     means = [means mean(accuracy)];
@@ -32,16 +34,23 @@ for trial=trials
     ts = tinv([0.025  0.975],length(accuracy)-1);      % T-Score
     CI = mean(accuracy) + ts*SEM;                      % Confidence Intervals
     conf_i = [conf_i CI];
+    y_neg = [y_neg mean(accuracy) - CI(1)];
+    y_pos = [y_pos CI(2) - mean(accuracy)];
 end
 
-disp('trials')
-disp(trials)
-disp('mean')
-disp(means)
-disp('Standard Deviation')
-disp(std_d)
-disp('Confidence Intervla')
-disp(conf_i)
+disp('trials');
+disp(trials);
+disp('mean');
+disp(means);
+disp('Standard Deviation');
+disp(std_d);
+disp('Confidence Intervla');
+disp(conf_i);
+
+errorbar(trials,means,y_neg,y_pos,'o');
+title('Perceptron Confidence Intervals');
+ylabel('Mean');
+xlabel('Trials');
 
 
 
