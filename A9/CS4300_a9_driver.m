@@ -25,7 +25,7 @@ IMG = 1;
 EUL = 2;
 AVG = 3;
 
-FEATURE_TYPE = AVG;
+FEATURE_TYPE = EUL;
 x = [];
 y = [];
 

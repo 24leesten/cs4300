@@ -31,7 +31,7 @@ y = [];
 for g = G
     img = g.im;
     img = img > 150;
-    eul = bweuler(img,4);
+    eul = bweuler(img,4)
     x = [x; eul];
     if which == 1
         y = [y; 1];
@@ -43,7 +43,7 @@ end
 for p = P
     img = p.im;
     img = img > 150;
-    eul = bweuler(img,4);
+    eul = bweuler(img,4)
     x = [x; eul];
     if which == 2
         y = [y; 1];
@@ -55,7 +55,7 @@ end
 for w = W
     img = w.im;
     img = img > 150;
-    eul = bweuler(img,4);
+    eul = bweuler(img,4)
     x = [x; eul];
     if which == 3
         y = [y; 1];

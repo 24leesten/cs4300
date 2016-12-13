@@ -44,7 +44,7 @@ disp('mean');
 disp(means);
 disp('Standard Deviation');
 disp(std_d);
-disp('Confidence Intervla');
+disp('Confidence Interval');
 disp(conf_i);
 
 errorbar(trials,means,y_neg,y_pos,'o');

@@ -17,7 +17,7 @@ IMG = 1;
 EUL = 2;
 AVG = 3;
 
-FEATURE_TYPE = IMG;
+FEATURE_TYPE = AVG;
 
 trials = [1 2 4 8 16 32];
 means = [];
@@ -34,8 +34,8 @@ for trial=trials
     ts = tinv([0.025  0.975],length(accuracy)-1);      % T-Score
     CI = mean(accuracy) + ts*SEM;                      % Confidence Intervals
     conf_i = [conf_i CI];
-    y_neg = [y_neg CI(1)];
-    y_pos = [y_pos CI(2)];
+    y_neg = [y_neg mean(accuracy) - CI(1)];
+    y_pos = [y_pos CI(2) - mean(accuracy)];
 end
 
 disp('trials');
@@ -44,11 +44,13 @@ disp('mean');
 disp(means);
 disp('Standard Deviation');
 disp(std_d);
-disp('Confidence Intervla');
+disp('Confidence Interval');
 disp(conf_i);
 
-errorbar(trials,means,yneg,ypos,'o');
-title('Perceptron Confidence Interv')
+errorbar(trials,means,y_neg,y_pos,'o');
+title('Perceptron Confidence Intervals');
+ylabel('Mean');
+xlabel('Trials');
 
 
 
