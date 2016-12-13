@@ -19,19 +19,19 @@ AVG = 3;
 
 FEATURE_TYPE = IMG;
 
-trials = [1 2 4 8 16];
+trials = [1 2 4 8 16 32];
 means = [];
 std_d = [];
-ci = [];
-for val=trials
-    accuracy = CS4300_get_stats(FEATURE_TYPE);
+conf_i = [];
+for trial=trials
+    accuracy = CS4300_get_stats(FEATURE_TYPE, trial);
     means = [means mean(accuracy)];
     std_d = [std_d std(accuracy)];
     
     SEM = std(accuracy)/sqrt(length(accuracy));        % Standard Error
     ts = tinv([0.025  0.975],length(accuracy)-1);      % T-Score
     CI = mean(accuracy) + ts*SEM;                      % Confidence Intervals
-    ci = [ci CI];
+    conf_i = [conf_i CI];
 end
 
 disp('trials')
@@ -41,14 +41,14 @@ disp(means)
 disp('Standard Deviation')
 disp(std_d)
 disp('Confidence Intervla')
-disp(ci)
+disp(conf_i)
 
 
 
 
 
 
-function accuracy = CS4300_get_stats(FEATURE_TYPE)
+function avg = CS4300_get_stats(FEATURE_TYPE, trials)
 
 alpha = 0.1;
 max_iter = 2;
@@ -58,9 +58,6 @@ LABEL_G = 1;
 LABEL_P = 2;
 LABEL_W = 3;
 
-x = [];
-y = [];
-
 [G, P, W] = CS4300_load_images(false);
 
 avg = [];
@@ -68,19 +65,19 @@ avg = [];
 for i=1:100
 
     [x,y] = getFeatures(LABEL_G, FEATURE_TYPE, G, P, W);
-    [g_weights,hist] = CS4300_perceptron_learning(x,y,alpha,max_iter,rate);
+    [g_weights,hist] = CS4300_perceptron_learning(x,y,alpha,trials,rate);
     %printPretty('W',hist);
 
     [x,y] = getFeatures(LABEL_P, FEATURE_TYPE, G, P, W);
-    [p_weights,hist] = CS4300_perceptron_learning(x,y,alpha,max_iter,rate);
+    [p_weights,hist] = CS4300_perceptron_learning(x,y,alpha,trials,rate);
     %printPretty('W',hist);
 
     [x,y] = getFeatures(LABEL_W, FEATURE_TYPE, G, P, W);
-    [w_weights,hist] = CS4300_perceptron_learning(x,y,alpha,max_iter,rate);
+    [w_weights,hist] = CS4300_perceptron_learning(x,y,alpha,trials,rate);
     %printPretty('W',hist);
 
     success = CS4300_test_success(g_weights, p_weights, w_weights, G, P, W, FEATURE_TYPE);
-    accuracy = [avg mean(success)];
+    avg = [avg mean(success)];
     
 end
 
